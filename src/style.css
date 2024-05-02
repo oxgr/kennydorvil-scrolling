@@ -15,29 +15,59 @@
 
 html {
   scroll-snap-type: y mandatory;
+  scroll-snap-stop: always;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
 }
 
+#debug {
+  position: fixed;
+  top: 10vh;
+  right: 10vw;
+  color: #f4cde9;
+  z-index: 10;
+  display: none;
+}
+
 #app {
   background: black;
+}
+
+.intersection {
+  /* outline: solid 1px red; */
+  height: 80vh;
+  width: 100%;
+  position: fixed;
+  top: 10vh;
 }
 
 .vignettes {
   display: flex;
   flex-flow: column;
+  padding-top: 10vh;
+  padding-bottom: 100vh;
 }
 
 .vignette {
-  /* flex-basis: 100vh; */
-  display: flex;
-  align-items: center;
   padding: 5% 0;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+
+  /* vertical size for scroll snap */
   block-size: 100%;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+
+  /* center img child vertically */
+  /* display: flex; */
+  /* align-items: center; */
+
+  transition: 0.5s all ease-out;
+}
+
+.vignette:not(.active) {
+  filter: blur(20px);
 }
 
 img {
