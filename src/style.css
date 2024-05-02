@@ -36,12 +36,24 @@ body {
   background: black;
 }
 
+#vignetteEffect {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+
+  /* background: white; */
+  box-shadow: inset 0px 0px 100px 60px #000;
+  z-index: 10;
+}
+
 .intersection {
-  /* outline: solid 1px red; */
-  height: 80vh;
+  --height: 60vh;
+  outline: solid 1px red;
+  height: var(--height);
+  top: calc((50vh - (var(--height) * 0.5)));
   width: 100%;
   position: fixed;
-  top: 10vh;
 }
 
 .vignettes {
@@ -63,11 +75,11 @@ body {
   /* display: flex; */
   /* align-items: center; */
 
-  transition: 0.5s all ease-out;
+  transition: 0.1s all ease-out;
 }
 
 .vignette:not(.active) {
-  filter: blur(20px);
+  /* filter: blur(20px); */
 }
 
 img {

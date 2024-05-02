@@ -46,26 +46,47 @@ function addElements(container: Element) {
 }
 
 function registerIO(root: Element, debug: Element) {
+  const threshold = Array(100)
+    .fill(0)
+    .map((_, i) => i * 0.01);
+
+  console.log({ threshold });
   // Register IntersectionObserver
   return new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        console.log({
-          entry,
-          target: entry.target,
-          id: entry.target.id,
-          ratio: entry.intersectionRatio,
-        });
-        if (entry.intersectionRatio > 0.5) {
-          // Add 'active' class if observation target is inside viewport
-          entry.target.classList.add("active");
-          debug.innerHTML = `#${entry.target.id.toString()} -> ${entry.target.classList.toString()}`;
-        } else {
-          // Remove 'active' class otherwise
-          entry.target.classList.remove("active");
+        if (entry.intersectionRatio > 0) {
+          // console.log({
+          //   entry,
+          //   target: entry.target,
+          //   id: entry.target.id,
+          //   ratio: entry.intersectionRatio,
+          // });
         }
+
+        // if (entry.intersectionRatio > 0.8) {
+        //   entry.target.style.filter = `blur(0px)`;
+        //   return;
+        // }
+
+        const BLUR_PX_MAX = 20;
+        // const ratio = Math.pow(entry.intersectionRatio, 0.5);
+        const RATIO_CORRECTION_FACTOR = 1.5;
+        const ratio = entry.intersectionRatio * RATIO_CORRECTION_FACTOR;
+        // console.log({ int: entry.intersectionRatio, ratio });
+        const blurAmt = BLUR_PX_MAX - Math.round(ratio * BLUR_PX_MAX);
+        entry.target.style.filter = `blur(${blurAmt}px)`;
+
+        // if (entry.intersectionRatio > 0.5) {
+        //   // Add 'active' class if observation target is inside viewport
+        //   entry.target.classList.add("active");
+        //   debug.innerHTML = `#${entry.target.id.toString()} -> ${entry.target.classList.toString()}`;
+        // } else {
+        //   // Remove 'active' class otherwise
+        //   entry.target.classList.remove("active");
+        // }
       });
     },
-    { root: null, threshold: [0.2, 0.5] },
+    { root: null, rootMargin: "-20% 0% -20% 0%", threshold },
   );
 }
