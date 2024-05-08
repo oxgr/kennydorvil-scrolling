@@ -1,4 +1,5 @@
 export function main() {
+  console.log("main running!");
   const io = registerIO();
 
   const linkedElements = document.querySelectorAll(".linked");
