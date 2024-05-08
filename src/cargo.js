@@ -12,16 +12,16 @@ function main() {
 }
 
 function registerIO() {
-  const threshold = Array(100)
+  const THRESHOLD_RATE = 50;
+  const threshold = Array(THRESHOLD_RATE)
     .fill(0)
-    .map((_, i) => i * 0.01);
+    .map((_, i) => i / THRESHOLD_RATE);
 
   const ioOptions = { root: null, rootMargin: "-10% 0% -10% 0%", threshold };
 
   const ioCallback = (entries) => {
     entries.forEach((entry) => {
       if (entry.intersectionRatio > 0) {
-        console.log("entry");
         // console.log({
         //   entry,
         //   target: entry.target,

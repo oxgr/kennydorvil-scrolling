@@ -1,3 +1,5 @@
+@import "./cargo.css";
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -11,12 +13,6 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-html {
-  scroll-snap-type: y mandatory;
-  scroll-snap-stop: always;
-  scroll-behavior: smooth;
 }
 
 body {
@@ -36,55 +32,20 @@ body {
   background: black;
 }
 
-#vignetteEffect {
-  height: 100vh;
+#list {
+  z-index: 10;
+  background: white;
+  height: 10vh;
   width: 100vw;
   position: fixed;
-  top: 0;
-
-  /* background: white; */
-  box-shadow: inset 0px 0px 100px 60px #000;
-  z-index: 10;
-}
-
-.intersection {
-  --height: 60vh;
-  /* outline: solid 1px red; */
-  height: var(--height);
-  top: calc((50vh - (var(--height) * 0.5)));
-  width: 100%;
-  position: fixed;
-}
-
-.vignettes {
-  display: flex;
-  flex-flow: column;
-  padding-top: 10vh;
-  padding-bottom: 100vh;
-}
-
-.vignette {
-  padding: 5% 0;
-  height: 100vh;
-
-  /* vertical size for scroll snap */
-  block-size: 100%;
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
-
-  /* center img child vertically */
-  /* display: flex; */
-  /* align-items: center; */
-
-  /* transform: rotateX(0.25turn); */
-
-  transition: 0.1s all ease-out;
-}
-
-.vignette:not(.active) {
-  /* filter: blur(20px); */
+  bottom: 0px;
 }
 
 img {
   width: 100vw;
+}
+
+.vignetteContainer {
+  padding-top: 10vh;
+  padding-bottom: 100vh;
 }

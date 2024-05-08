@@ -1,0 +1,42 @@
+#vignetteEffect {
+  height: calc(100vh - 2.5rem);
+  width: 100vw;
+  position: fixed !important;
+  top: -36px;
+  left: -36px;
+
+  /* background: white; */
+  box-shadow: inset 0px 0px 100px 60px #000;
+  z-index: 10;
+}
+
+.vignetteContainer {
+  display: flex;
+  flex-flow: column;
+
+  scroll-snap-type: y mandatory !important;
+  scroll-snap-stop: always !important;
+  scroll-behavior: smooth !important;
+}
+
+.vignetteContainer > .linked {
+  height: 100vh !important;
+
+  /* vertical size for scroll snap */
+  block-size: 100% !important;
+  scroll-snap-align: center !important;
+  scroll-snap-stop: always !important;
+
+  /*
+  transition: 0.1s all ease-out;
+   */
+}
+
+/* .intersection { */
+/*   --height: 60vh; */
+/*   /* outline: solid 1px red; */
+/*   height: var(--height); */
+/*   top: calc((50vh - (var(--height) * 0.5))); */
+/*   width: 100%; */
+/*   position: fixed; */
+/* } */
