@@ -1,5 +1,5 @@
 import "./style.css";
-import { main as cargoActions } from "./cargo.js";
+// import { main as cargoActions } from "./cargo.js";
 
 main();
 
@@ -17,7 +17,7 @@ function main() {
 
   /* Mirrored Cargo setup past this point */
 
-  cargoActions();
+  // cargoActions();
 
   /* Not for Cargo */
 
