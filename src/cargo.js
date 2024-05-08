@@ -1,5 +1,7 @@
-export function main() {
-  console.log("main running!");
+main();
+
+function main() {
+  console.log("main running from develop!");
   const io = registerIO();
 
   const linkedElements = document.querySelectorAll(".linked");
