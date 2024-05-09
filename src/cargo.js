@@ -77,6 +77,7 @@ function addIntersectionElement(container) {
 
 function addVignetteEffectElement(container) {
   const element = document.createElement("div");
+  element.classList.add("passthrough");
   element.id = "vignetteEffect";
   container.append(element);
   return element;
