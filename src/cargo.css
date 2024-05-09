@@ -12,25 +12,20 @@
 
 /* .vignetteContainer { */
 html {
-  /* display: flex; */
-  /* flex-flow: column; */
-
   scroll-snap-type: y mandatory !important;
   scroll-snap-stop: always !important;
   scroll-behavior: smooth !important;
 }
 
 .vignetteContainer > media-item.linked {
-  height: 100vh !important;
+  height: 100vh;
 
   /* vertical size for scroll snap */
-  block-size: 100% !important;
+  block-size: 20% !important;
   scroll-snap-align: center !important;
   scroll-snap-stop: always !important;
 
-  /*
   transition: 0.1s all ease-out;
-   */
 }
 
 .test.linked {

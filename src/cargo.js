@@ -8,37 +8,38 @@ function main() {
 
   linkedElements.forEach((vignette) => {
     io.observe(vignette);
+    vignette.style.filter = `blur(0px)`;
   });
 }
 
 function registerIO() {
-  const THRESHOLD_RATE = 50;
+  // Fill an array with 20 evenly dispersed values normalised 0.0-1.0
+  // Determines at which points of visibiility (1.0 = whole element is visible)
+  // that the callback function is called.
+  const THRESHOLD_RATE = 20;
   const threshold = Array(THRESHOLD_RATE)
     .fill(0)
     .map((_, i) => i / THRESHOLD_RATE);
 
+  // Options for IntersectionObserver, `null` root uses viewport
   const ioOptions = { root: null, rootMargin: "-10% 0% -10% 0%", threshold };
+
+  // Max strength of blur in pixels
+  const BLUR_STRENGTH_MAX = 20;
+  const MIN_VISIBILITY_THRESHOLD = 0.8;
 
   const ioCallback = (entries) => {
     entries.forEach((entry) => {
-      if (entry.intersectionRatio > 0) {
-        // console.log({
-        //   entry,
-        //   target: entry.target,
-        //   id: entry.target.id,
-        //   ratio: entry.intersectionRatio,
-        // });
-      }
+      // console.log({ entry });
 
-      /** adjust ratio behavior **/
-      const RATIO_CORRECTION_FACTOR = 1.2;
-      const ratio = entry.intersectionRatio * RATIO_CORRECTION_FACTOR;
-      // const ratio = Math.pow(entry.intersectionRatio, 0.5);
-      // console.log({ int: entry.intersectionRatio, ratio });
+      // Set ratio to max if element is above minimum visibility threshold.
+      const ratio =
+        entry.intersectionRatio > MIN_VISIBILITY_THRESHOLD
+          ? 1
+          : entry.intersectionRatio;
 
-      /** blur effect **/
-      const BLUR_PX_MAX = 20;
-      const blurAmt = BLUR_PX_MAX - Math.round(ratio * BLUR_PX_MAX);
+      // Set blur effect as a ratio of how visible an element is.
+      const blurAmt = BLUR_STRENGTH_MAX - Math.round(ratio * BLUR_STRENGTH_MAX);
       entry.target.style.filter = `blur(${blurAmt}px)`;
 
       /** mech effect **/
