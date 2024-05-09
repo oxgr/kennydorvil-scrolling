@@ -1,5 +1,5 @@
 #vignetteEffect {
-  height: calc(100vh - 2.5rem);
+  height: calc(100vh - 4rem);
   width: 100vw;
   position: fixed !important;
   top: -36px;
@@ -10,16 +10,17 @@
   z-index: 10;
 }
 
-.vignetteContainer {
-  display: flex;
-  flex-flow: column;
+/* .vignetteContainer { */
+html {
+  /* display: flex; */
+  /* flex-flow: column; */
 
   scroll-snap-type: y mandatory !important;
   scroll-snap-stop: always !important;
   scroll-behavior: smooth !important;
 }
 
-.vignetteContainer > .linked {
+.vignetteContainer > media-item.linked {
   height: 100vh !important;
 
   /* vertical size for scroll snap */
@@ -30,6 +31,11 @@
   /*
   transition: 0.1s all ease-out;
    */
+}
+
+.test.linked {
+  background: red;
+  width: 100%;
 }
 
 /* .intersection { */
