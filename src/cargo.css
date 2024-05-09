@@ -1,43 +1,48 @@
+:root {
+  --navbarHeight: 5rem;
+}
+
 #vignetteEffect {
-  height: calc(100vh - 4rem);
+  height: calc(100vh - var(--navbarHeight));
   width: 100vw;
   position: fixed !important;
-  top: -36px;
-  left: -36px;
+  /* top: -36px; */
+  /* left: -36px; */
 
-  /* background: white; */
-  box-shadow: inset 0px 0px 100px 60px #000;
+  /* background: pink; */
+  /* opacity: 0.2; */
+  box-shadow: inset 0px 0px 100px 80px #000;
   z-index: 10;
 }
 
-/* .vignetteContainer { */
+.passthrough {
+  /* allow links to pass through */
+  pointer-events: none;
+}
+
 html {
   scroll-snap-type: y mandatory !important;
   scroll-snap-stop: always !important;
   scroll-behavior: smooth !important;
 }
 
-.vignetteContainer > media-item.linked {
-  height: 100vh;
+.vignetteContainer {
+  padding-top: 50vh;
+  padding-bottom: 5vh;
+}
 
-  /* vertical size for scroll snap */
-  block-size: 20% !important;
+.vignetteContainer > media-item.linked {
   scroll-snap-align: center !important;
   scroll-snap-stop: always !important;
 
   transition: 0.1s all ease-out;
 }
 
-.test.linked {
-  background: red;
+.intersection {
+  --height: 60vh;
+  outline: solid 1px red;
+  height: var(--height);
+  top: calc((50vh - (var(--height) * 0.5)));
   width: 100%;
+  position: fixed;
 }
-
-/* .intersection { */
-/*   --height: 60vh; */
-/*   /* outline: solid 1px red; */
-/*   height: var(--height); */
-/*   top: calc((50vh - (var(--height) * 0.5))); */
-/*   width: 100%; */
-/*   position: fixed; */
-/* } */
