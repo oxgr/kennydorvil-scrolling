@@ -6,8 +6,6 @@
   height: calc(100vh - var(--navbarHeight));
   width: 100vw;
   position: fixed !important;
-  /* top: -36px; */
-  /* left: -36px; */
 
   /* background: pink; */
   /* opacity: 0.2; */
