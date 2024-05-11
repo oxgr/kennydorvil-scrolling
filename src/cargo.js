@@ -32,10 +32,18 @@ function main() {
 }
 
 function createIntersectionObserver(rootElement) {
+  const viewportWidth = document.documentElement.clientWidth;
+
+  // General approximation of bottom nav bar
+  // desktop ~= 90-100px
+  // mobile ~= 70-80px
+  const NAVBAR_HEIGHT = 100;
+
   // Rate at which the following callback function is called.
+  const MOBILE_WIDTH_CUTOFF = 720;
+  const ROOT_MARGIN_TOP = viewportWidth < 720 ? 20 : 5;
+  const ROOT_MARGIN_BOT = viewportWidth < 720 ? 35 : 20;
   const THRESHOLD_RATE = 100;
-  const ROOT_MARGIN_TOP = 5;
-  const ROOT_MARGIN_BOT = 20;
   const CENTER_CUTOFF_Y = 60;
 
   const OPACITY_MAX = 0.5;
@@ -48,9 +56,9 @@ function createIntersectionObserver(rootElement) {
   const MECH_MIN_VISIBILITY_THRESHOLD = 0.95;
 
   //
-  const MECH_ROTATE_MAX = 0.2;
+  const MECH_ROTATE_MAX = 0.3;
   const MECH_PERSPECTIVE_AMT = 40;
-  const MECH_SCALE_AMT = 0.1;
+  const MECH_SCALE_AMT = 0.3;
   const MECH_SCALE_OFFSET = 1 - MECH_SCALE_AMT;
 
   // Fill an array with evenly dispersed values normalised 0.0-1.0
@@ -58,8 +66,6 @@ function createIntersectionObserver(rootElement) {
   const intersectionThresholds = Array(THRESHOLD_RATE)
     .fill(0)
     .map((_, i) => i / THRESHOLD_RATE);
-
-  console.log(rootElement);
 
   // Options for IntersectionObserver, `null` root uses viewport
   const ioOptions = {
@@ -127,9 +133,7 @@ function createIntersectionObserver(rootElement) {
         // const rotateAmt = isLow ? rotateAmtBase * -1 : rotateAmtBase;
 
         const rotateAmt = -rotateAmtBase;
-        const scaleAmt =
-          MECH_SCALE_OFFSET +
-          (MECH_SCALE_AMT - (MECH_SCALE_AMT - mechRatio * MECH_SCALE_AMT));
+        const scaleAmt = MECH_SCALE_OFFSET + mechRatio * MECH_SCALE_AMT;
         // const scaleAmt = 1;
 
         debug.rotateAmtBase = rotateAmtBase;
@@ -138,7 +142,7 @@ function createIntersectionObserver(rootElement) {
         debug.scaleAmt = scaleAmt;
         debug.initRatio = initRatio;
 
-        return `scale(${scaleAmt}) perspective(${MECH_PERSPECTIVE_AMT}vw) rotateX(-${rotateAmt}turn)  `;
+        return `perspective(${MECH_PERSPECTIVE_AMT}vw) rotateX(${rotateAmt}turn) scale(${scaleAmt})  `;
         // return `rotateX(${rotateAmt}turn)  `;
         //
       }
