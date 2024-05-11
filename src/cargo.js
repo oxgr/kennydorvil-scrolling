@@ -51,16 +51,17 @@ function createIntersectionObserver(rootElement) {
   // mobile ~= 70-80px
   const NAVBAR_HEIGHT = 100;
 
-  // Rate at which the following callback function is called.
   const MOBILE_WIDTH_CUTOFF = 640;
   const isMobile = viewportWidth < MOBILE_WIDTH_CUTOFF;
   const ROOT_MARGIN_TOP = isMobile ? 15 : 5;
   const ROOT_MARGIN_BOT = isMobile ? 25 : 20;
   // const ROOT_MARGIN_BOT = 20;
+
+  // Rate at which the following callback function is called.
   const THRESHOLD_RATE = 100;
   const CENTER_CUTOFF_Y = 60;
 
-  const OPACITY_MAX = 0;
+  const OPACITY_MIN = 0;
 
   // Max strength of blur in pixels
   const BLUR_STRENGTH_MAX = 20;
@@ -89,8 +90,10 @@ function createIntersectionObserver(rootElement) {
     threshold: intersectionThresholds,
   };
 
+  return new IntersectionObserver(ioCallback, ioOptions);
+
   // Function that is called when an element crosses a point in intersectionThresholds
-  const ioCallback = (entries) => {
+  function ioCallback(entries) {
     entries.forEach((entry) => {
       let debug = {};
       // const elem = entry.target;
@@ -98,28 +101,31 @@ function createIntersectionObserver(rootElement) {
 
       const viewportCenterY = entry.rootBounds.height * 0.5;
       const intRatioY = entry.intersectionRect.top;
-      const intRectHalf = entry.boundingClientRect.height * 0.5;
-      const isHigh = intRatioY < viewportCenterY + intRectHalf;
+      const boundHeight = entry.boundingClientRect.height;
+      const boundHeightHalf = boundHeight * 0.5;
+      const isHigh = intRatioY < viewportCenterY + boundHeightHalf;
       // const directionHigh = intRatioY
 
       const intRatio = entry.intersectionRatio;
 
-      console.log({
-        id: entry.target.href,
-        entry,
-        intRatio,
-        intRatioY,
-        viewportCenterY,
-      });
+      // console.log({
+      //   id: entry.target.href,
+      //   entry,
+      //   intRatio,
+      //   intRatioY,
+      //   viewportCenterY,
+      // });
 
-      // if (intRatio == 1 && intRatioY > viewportCenterY) {
-      //   console.log("intRatio is 1! :: ", entry);
-      //   return;
+      // if (boundHeight == 0) {
+      //   console.log(entry);
+      //   // console.log(entry.target.href);
+      //   ratio = 0;
       // }
 
       // console.log(intRatio);
-      // if (intRatio == 0) {
+      // if (!entry.isIntersecting) {
       //   resetCSS(entry.target);
+      //   console.log("reset CSS", entry.target.href);
       //   return;
       // }
 
@@ -148,7 +154,7 @@ function createIntersectionObserver(rootElement) {
       return;
 
       function opacity(initRatio) {
-        const opacityAmt = initRatio * OPACITY_MAX + (1 - OPACITY_MAX);
+        const opacityAmt = initRatio * (1 - OPACITY_MIN) + OPACITY_MIN;
         return `${opacityAmt}`;
       }
 
@@ -189,9 +195,7 @@ function createIntersectionObserver(rootElement) {
         //
       }
     });
-  };
-
-  return new IntersectionObserver(ioCallback, ioOptions);
+  }
 }
 
 function addElement(container, tag, { id, classList }) {
