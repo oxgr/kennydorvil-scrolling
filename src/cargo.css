@@ -1,5 +1,9 @@
 :root {
-  --navbarHeight: 5rem;
+  /* --navbarHeight: 5rem; */
+  --navbarHeight: 5vh;
+}
+
+#debug {
 }
 
 #vignetteEffect {
@@ -9,8 +13,17 @@
 
   /* background: pink; */
   /* opacity: 0.2; */
-  box-shadow: inset 0px 0px 100px 80px #000;
+  box-shadow: inset 0px 0px 100px 100px #000;
   z-index: 10;
+}
+
+#intersectionMarker {
+  --height: 60vh;
+  outline: solid 1px red;
+  height: var(--height);
+  top: calc((50vh - (var(--height) * 0.5)) - var(--navbarHeight));
+  width: 100%;
+  position: fixed;
 }
 
 .passthrough {
@@ -22,25 +35,26 @@ html {
   scroll-snap-type: y mandatory !important;
   scroll-snap-stop: always !important;
   scroll-behavior: smooth !important;
+  scroll-padding-bottom: var(--navbarHeight);
 }
 
 .vignetteContainer {
   padding-top: 50vh;
   padding-bottom: 5vh;
+
+  /* background: blue; */
+
+  /* height: calc(100vh - var(--navbarHeight)); */
+  /* overflow: scroll; */
 }
 
 .vignetteContainer > media-item.linked {
   scroll-snap-align: center !important;
   scroll-snap-stop: always !important;
 
-  transition: 0.1s all ease-out;
+  transition: 0.3s all ease-out;
 }
 
-.intersection {
-  --height: 60vh;
-  outline: solid 1px red;
-  height: var(--height);
-  top: calc((50vh - (var(--height) * 0.5)));
-  width: 100%;
-  position: fixed;
+.linked {
+  /* height: 80vh; */
 }

@@ -3,21 +3,25 @@ main();
 function main() {
   console.log("main running from develop!");
 
+  const debugElement = addDebugElement(document.body);
   const vignetteEffectElement = addVignetteEffectElement(document.body);
-  const intersectionElement = addIntersectionElement(document.body);
+  const intersectionMarkerElement = addIntersectionElement(document.body);
   const vignetteContainer = document.querySelector(".vignetteContainer");
-
-  const io = registerIO(vignetteContainer);
 
   const linkedElements = document.querySelectorAll(".linked");
 
+  const io = createIntersectionObserver(vignetteContainer);
+
   linkedElements.forEach((vignette) => {
     io.observe(vignette);
-    vignette.style.filter = `blur(0px)`;
+
+    // // Manually unset filter on init
+    vignette.style.filter = `none`;
+    // vignette.style.filter = `rotateX(0.5turn)`;
   });
 }
 
-function registerIO(rootElement) {
+function createIntersectionObserver(rootElement) {
   // Rate at which the following callback function is called.
   const THRESHOLD_RATE = 20;
 
@@ -25,7 +29,10 @@ function registerIO(rootElement) {
   const BLUR_STRENGTH_MAX = 20;
 
   // If element is above this value, set to max (1.0 = whole element is visible)
-  const MIN_VISIBILITY_THRESHOLD = 0.9;
+  const MIN_VISIBILITY_THRESHOLD = 0.7;
+
+  //
+  const ROTATE_MAX = 0.25;
 
   // Fill an array with evenly dispersed values normalised 0.0-1.0
   // Points are used to trigger at what visibility points the callback function is triggered.
@@ -34,6 +41,7 @@ function registerIO(rootElement) {
     .map((_, i) => i / THRESHOLD_RATE);
 
   console.log(rootElement);
+
   // Options for IntersectionObserver, `null` root uses viewport
   const ioOptions = {
     root: null,
@@ -60,25 +68,38 @@ function registerIO(rootElement) {
       entry.target.style.filter = `blur(${blurAmt}px)`;
 
       /** mech effect **/
-      // const ROTATE_MAX = 0.5;
       // const rotateAmt = ROTATE_MAX - ratio * ROTATE_MAX;
       // entry.target.style.transform = `rotateX(${rotateAmt}turn)`;
     });
   };
+
   return new IntersectionObserver(ioCallback, ioOptions);
 }
 
-function addIntersectionElement(container) {
-  const element = document.createElement("div");
-  element.classList.add("intersection", "passthrough");
+function addElement(container, tag, { id, classList }) {
+  const element = document.createElement(tag);
+  if (id) element.id = id;
+  if (classList) element.classList.add(...classList);
   container.append(element);
   return element;
 }
 
+function addIntersectionElement(container) {
+  return addElement(container, "div", {
+    id: "intersectionMarker",
+    classList: ["passthrough"],
+  });
+}
+
 function addVignetteEffectElement(container) {
-  const element = document.createElement("div");
-  element.classList.add("passthrough");
-  element.id = "vignetteEffect";
-  container.append(element);
-  return element;
+  return addElement(container, "div", {
+    id: "vignetteEffect",
+    classList: ["passthrough"],
+  });
+}
+
+function addDebugElement(container) {
+  return addElement(container, "div", {
+    id: "debug",
+  });
 }
