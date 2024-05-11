@@ -4,18 +4,25 @@ main();
 function main() {
   console.log("main running from develop!");
 
-  const vignetteContainer = document.querySelector(".vignetteContainer");
+  const scriptContainer = document.querySelector("#scrollingEffects");
+  const vignetteContainer = addElement(scriptContainer, "div", {
+    id: "vignetteContainer",
+    classList: ["vignetteContainer"],
+  });
+
   const mainParentElement = vignetteContainer.parentNode;
   const vignetteEffectElement = addVignetteEffectElement(document.body);
   const intersectionMarkerElement = addIntersectionElement(document.body);
   const linkedElements = document.querySelectorAll(".linked");
 
   linkedElements.forEach((linkedElement) => {
+    // add vignette elements into container
     const vignetteElement = addElement(vignetteContainer, "div", {
       id: linkedElement.href,
       classList: ["vignette"],
     });
 
+    // move .linked images into vignette elements
     vignetteElement.append(linkedElement);
   });
 
