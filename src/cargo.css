@@ -71,14 +71,18 @@ html {
   /* overflow: scroll; */
 }
 
-.vignette > .linked,
+/* .vignette > .linked, */
 .vignetteContainer > .vignette {
   scroll-snap-align: center !important;
   scroll-snap-stop: always !important;
 
-  transition: 0.1s all ease-in-out;
+  /* transition: 0.1s all ease-in-out; */
 
   height: max(18rem, 40vw);
+}
+
+.vignette > .linked {
+  /* transition: 0.1s all ease-in-out; */
 }
 
 .spin {
