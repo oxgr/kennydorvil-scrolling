@@ -26,9 +26,13 @@ function main() {
     io.observe(vignette);
 
     // // Manually unset filter on init
-    vignette.style.filter = `none`;
-    // vignette.style.filter = `rotateX(0.5turn)`;
+    resetCSS(vignette);
   });
+}
+
+function resetCSS(element) {
+  element.style.filter = `none`;
+  element.style.transform = `rotateX(0.25turn)`;
 }
 
 function createIntersectionObserver(rootElement) {
@@ -40,9 +44,11 @@ function createIntersectionObserver(rootElement) {
   const NAVBAR_HEIGHT = 100;
 
   // Rate at which the following callback function is called.
-  const MOBILE_WIDTH_CUTOFF = 720;
-  const ROOT_MARGIN_TOP = viewportWidth < 720 ? 20 : 5;
-  const ROOT_MARGIN_BOT = viewportWidth < 720 ? 35 : 20;
+  const MOBILE_WIDTH_CUTOFF = 640;
+  const isMobile = viewportWidth < MOBILE_WIDTH_CUTOFF;
+  const ROOT_MARGIN_TOP = isMobile ? 10 : 5;
+  const ROOT_MARGIN_BOT = isMobile ? 25 : 20;
+  // const ROOT_MARGIN_BOT = 20;
   const THRESHOLD_RATE = 100;
   const CENTER_CUTOFF_Y = 60;
 
@@ -56,7 +62,7 @@ function createIntersectionObserver(rootElement) {
   const MECH_MIN_VISIBILITY_THRESHOLD = 0.95;
 
   //
-  const MECH_ROTATE_MAX = 0.3;
+  const MECH_ROTATE_MAX = 0.25;
   const MECH_PERSPECTIVE_AMT = 40;
   const MECH_SCALE_AMT = 0.3;
   const MECH_SCALE_OFFSET = 1 - MECH_SCALE_AMT;
@@ -82,7 +88,28 @@ function createIntersectionObserver(rootElement) {
       // const elem = entry.target;
       // console.log(entry);
 
+      const viewportCenterY = entry.rootBounds.height * 0.5;
+      const intRatioY = entry.intersectionRect.top;
+
       const intRatio = entry.intersectionRatio;
+
+      // console.log({
+      //   id: entry.target.href,
+      //   intRatio,
+      //   intRatioY,
+      //   viewportCenterY,
+      // });
+
+      // if (intRatio == 1 && intRatioY > viewportCenterY) {
+      //   console.log("intRatio is 1! :: ", entry);
+      //   return;
+      // }
+
+      // console.log(intRatio);
+      // if (intRatio == 0) {
+      //   resetCSS(entry.target);
+      //   return;
+      // }
 
       const filterBlurString = filterBlur(intRatio);
       const transformMechString = transformMech(intRatio);
@@ -98,10 +125,13 @@ function createIntersectionObserver(rootElement) {
       //   // entry.target.style.animation = "none";
       // }
 
-      const debugStr = JSON.stringify(debug, null, 2).replaceAll('"', "");
-      const entryY = entries.map((e) => e.target.getBoundingClientRect().y);
-      const entryStr = JSON.stringify(entryY, null, 2).replaceAll('"', "");
-      debugElement.innerHTML = `${debugStr}\n${entryStr}`;
+      if (entry.target.href == "04-yseult") {
+        const debugStr = JSON.stringify(debug, null, 2).replaceAll('"', "");
+        // const entryY = entries.map((e) => e.target.getBoundingClientRect().y);
+        // const entryStr = JSON.stringify(entryY, null, 2).replaceAll('"', "");
+        // debugElement.innerHTML = `${debugStr}\n${entryStr}`;
+        debugElement.innerHTML = `${debugStr}`;
+      }
 
       return;
 
@@ -118,7 +148,7 @@ function createIntersectionObserver(rootElement) {
         // Set blur effect as a ratio of how visible an element is.
         const blurAmt =
           BLUR_STRENGTH_MAX - Math.round(blurRatio * BLUR_STRENGTH_MAX);
-        return `blur(${blurAmt}px) opacity(${opacity(blurRatio) * 100}%)`;
+        return `blur(${blurAmt}px) brightness(${opacity(blurRatio) * 100}%)`;
       }
 
       function transformMech(initRatio) {

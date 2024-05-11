@@ -10,6 +10,7 @@
   height: 20vh;
   top: 20px;
   left: 20px;
+  display: none;
 }
 
 #vignetteEffect {
@@ -82,7 +83,8 @@ html {
 }
 
 .vignette > .linked {
-  /* transition: 0.1s all ease-in-out; */
+  /* transition: 0.2s all ease-in-out; */
+  /* transform: rotateX(-0.25turn); */
 }
 
 .spin {
