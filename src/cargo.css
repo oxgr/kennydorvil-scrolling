@@ -4,21 +4,38 @@
 }
 
 #debug {
+  z-index: 100;
+  color: white;
+  position: fixed;
+  height: 20vh;
+  top: 20px;
+  left: 20px;
 }
 
 #vignetteEffect {
+  --gradient-top: 20%;
+  --gradient-bot: 25%;
+
   height: calc(100vh - var(--navbarHeight));
+  /* height: 100vh; */
   width: 100vw;
   position: fixed !important;
 
   /* background: pink; */
   /* opacity: 0.2; */
-  box-shadow: inset 0px 0px 100px 100px #000;
+  /* box-shadow: inset 0px 0px 100px 100px #000; */
+  background: linear-gradient(
+    black,
+    var(--gradient-top),
+    transparent,
+    calc(100% - var(--gradient-bot)),
+    black
+  );
   z-index: 10;
 }
 
 #intersectionMarker {
-  --height: 60vh;
+  --height: 70vh;
   outline: solid 1px red;
   height: var(--height);
   top: calc((50vh - (var(--height) * 0.5)) - var(--navbarHeight));
@@ -35,12 +52,18 @@ html {
   scroll-snap-type: y mandatory !important;
   scroll-snap-stop: always !important;
   scroll-behavior: smooth !important;
-  scroll-padding-bottom: var(--navbarHeight);
+  /* scroll-padding-bottom: var(--navbarHeight); */
+  scroll-padding-bottom: 15vh;
+}
+@media (width <= 1250px) {
+  html {
+    scroll-padding-bottom: 5vh;
+  }
 }
 
 .vignetteContainer {
   padding-top: 50vh;
-  padding-bottom: 5vh;
+  padding-bottom: 10vh;
 
   /* background: blue; */
 
@@ -48,13 +71,11 @@ html {
   /* overflow: scroll; */
 }
 
-.vignetteContainer > media-item.linked {
+.vignetteContainer > .vignette {
   scroll-snap-align: center !important;
   scroll-snap-stop: always !important;
 
-  transition: 0.3s all ease-out;
-}
+  transition: 0.8s all ease-out;
 
-.linked {
-  /* height: 80vh; */
+  height: max(18rem, 40vw);
 }
