@@ -4,8 +4,9 @@ main();
 function main() {
   console.log("main running from develop!");
 
-  const scriptContainer = document.querySelector("#scrollingEffects");
-  const vignetteContainer = addElement(scriptContainer, "div", {
+  const scriptElement = document.querySelector("#scrollingEffects");
+  const mainContainer = scriptElement.parentElement;
+  const vignetteContainer = addElement(mainContainer, "div", {
     id: "vignetteContainer",
     classList: ["vignetteContainer"],
   });
