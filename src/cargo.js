@@ -46,13 +46,13 @@ function createIntersectionObserver(rootElement) {
   // Rate at which the following callback function is called.
   const MOBILE_WIDTH_CUTOFF = 640;
   const isMobile = viewportWidth < MOBILE_WIDTH_CUTOFF;
-  const ROOT_MARGIN_TOP = isMobile ? 10 : 5;
+  const ROOT_MARGIN_TOP = isMobile ? 15 : 5;
   const ROOT_MARGIN_BOT = isMobile ? 25 : 20;
   // const ROOT_MARGIN_BOT = 20;
   const THRESHOLD_RATE = 100;
   const CENTER_CUTOFF_Y = 60;
 
-  const OPACITY_MAX = 0.5;
+  const OPACITY_MAX = 0;
 
   // Max strength of blur in pixels
   const BLUR_STRENGTH_MAX = 20;
@@ -90,15 +90,19 @@ function createIntersectionObserver(rootElement) {
 
       const viewportCenterY = entry.rootBounds.height * 0.5;
       const intRatioY = entry.intersectionRect.top;
+      const intRectHalf = entry.boundingClientRect.height * 0.5;
+      const isHigh = intRatioY < viewportCenterY + intRectHalf;
+      // const directionHigh = intRatioY
 
       const intRatio = entry.intersectionRatio;
 
-      // console.log({
-      //   id: entry.target.href,
-      //   intRatio,
-      //   intRatioY,
-      //   viewportCenterY,
-      // });
+      console.log({
+        id: entry.target.href,
+        entry,
+        intRatio,
+        intRatioY,
+        viewportCenterY,
+      });
 
       // if (intRatio == 1 && intRatioY > viewportCenterY) {
       //   console.log("intRatio is 1! :: ", entry);
@@ -112,7 +116,7 @@ function createIntersectionObserver(rootElement) {
       // }
 
       const filterBlurString = filterBlur(intRatio);
-      const transformMechString = transformMech(intRatio);
+      const transformMechString = transformMech(intRatio, isHigh);
       // const opacityString = opacity(initRatio);
 
       entry.target.style.filter = filterBlurString;
@@ -151,7 +155,7 @@ function createIntersectionObserver(rootElement) {
         return `blur(${blurAmt}px) brightness(${opacity(blurRatio) * 100}%)`;
       }
 
-      function transformMech(initRatio) {
+      function transformMech(initRatio, isHigh) {
         const mechRatio =
           initRatio > MECH_MIN_VISIBILITY_THRESHOLD ? 1 : initRatio;
 
@@ -162,7 +166,7 @@ function createIntersectionObserver(rootElement) {
         // const isLow = eb.y > CENTER_CUTOFF_Y;
         // const rotateAmt = isLow ? rotateAmtBase * -1 : rotateAmtBase;
 
-        const rotateAmt = -rotateAmtBase;
+        const rotateAmt = isHigh ? rotateAmtBase : -rotateAmtBase;
         const scaleAmt = MECH_SCALE_OFFSET + mechRatio * MECH_SCALE_AMT;
         // const scaleAmt = 1;
 

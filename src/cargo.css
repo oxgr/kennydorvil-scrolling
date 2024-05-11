@@ -42,6 +42,7 @@
   top: calc((50vh - (var(--height) * 0.5)) - var(--navbarHeight));
   width: 100%;
   position: fixed;
+  display: none;
 }
 
 .passthrough {
