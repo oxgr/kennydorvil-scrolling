@@ -13,7 +13,7 @@
 }
 
 #vignetteEffect {
-  --gradient-top: 20%;
+  --gradient-top: 15%;
   --gradient-bot: 25%;
 
   height: calc(100vh - var(--navbarHeight));
@@ -71,11 +71,25 @@ html {
   /* overflow: scroll; */
 }
 
+.vignette > .linked,
 .vignetteContainer > .vignette {
   scroll-snap-align: center !important;
   scroll-snap-stop: always !important;
 
-  transition: 0.8s all ease-out;
+  transition: 0.1s all ease-in-out;
 
   height: max(18rem, 40vw);
+}
+
+.spin {
+  animation: spin1 1s linear;
+}
+
+@keyframes spin1 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
