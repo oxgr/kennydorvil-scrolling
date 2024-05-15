@@ -51,7 +51,7 @@
 }
 
 html {
-  scroll-snap-type: y mandatory !important;
+  scroll-snap-type: y proximity !important;
   scroll-snap-stop: always !important;
   scroll-behavior: smooth !important;
   /* scroll-padding-bottom: var(--navbarHeight); */
@@ -64,7 +64,7 @@ html {
 }
 
 .vignetteContainer {
-  padding-top: 50vh;
+  /* padding-top: 50vh; */
   padding-bottom: 10vh;
 
   /* background: blue; */
@@ -80,7 +80,7 @@ html {
 
   /* transition: 0.1s all ease-in-out; */
 
-  height: max(18rem, 40vw);
+  height: min-content;
 }
 
 .vignette > .linked {
