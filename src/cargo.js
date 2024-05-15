@@ -100,11 +100,9 @@ function createIntersectionObserver(rootElement) {
       // console.log(entry);
 
       const viewportCenterY = entry.rootBounds.height * 0.5;
-      const intRatioY = entry.intersectionRect.top;
-      const boundHeight = entry.boundingClientRect.height;
-      const boundHeightHalf = boundHeight * 0.5;
-      const isHigh = intRatioY < viewportCenterY + boundHeightHalf;
-      // const directionHigh = intRatioY
+      const boundRectTop = entry.boundingClientRect.top;
+      const boundHeightHalf = entry.boundingClientRect.height * 0.5;
+      const isHigh = boundRectTop < viewportCenterY - boundHeightHalf;
 
       const intRatio = entry.intersectionRatio;
 
