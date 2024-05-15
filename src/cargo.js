@@ -71,7 +71,7 @@ function createIntersectionObserver(rootElement) {
   const MECH_MIN_VISIBILITY_THRESHOLD = 0.95;
 
   //
-  const MECH_ROTATE_MAX = 0.25;
+  const MECH_ROTATE_MAX = 0.2;
   const MECH_PERSPECTIVE_AMT = 40;
   const MECH_SCALE_AMT = 0.3;
   const MECH_SCALE_OFFSET = 1 - MECH_SCALE_AMT;
