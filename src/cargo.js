@@ -1,19 +1,20 @@
 const Params = {
-  DEBUG: false,
-
+  // Margins of intersection observer as ratios of the viewport.
+  // Determines the point where vignettes start to react.
   ROOT_MARGIN_TOP_DESKTOP: 5,
   ROOT_MARGIN_BOT_DESKTOP: 20,
   ROOT_MARGIN_TOP_MOBILE: 25,
   ROOT_MARGIN_BOT_MOBILE: 30,
 
-  MOBILE_WIDTH_CUTOFF: 640,
+  // If viewport is under this value, consider it mobile.
+  MOBILE_WIDTH_CUTOFF_PX: 640,
+
+  // Extra padding added to top
   MOBILE_TOP_PADDING_VH: 40,
 
-  // Rate at which the following callback function is called.
-  THRESHOLD_RATE: 100,
-  CENTER_CUTOFF_Y: 60,
-
-  OPACITY_MIN: 0,
+  // Rate at which the following callback function is called
+  // as fraction of an element's visibility inside the intersection bounds.
+  INTERSECTION_RATE: 100,
 
   // Max strength of blur in pixels
   BLUR_STRENGTH_MAX: 20,
@@ -22,9 +23,16 @@ const Params = {
   MECH_ROTATE_MAX: 0.2,
   MECH_PERSPECTIVE_AMT: 40,
   MECH_SCALE_AMT: 0.3,
+
+  OPACITY_MIN: 0,
+
+  DEBUG: false,
 };
 
+// Debug element to render real-time data that's too fast for console.
 const debugElement = Params.DEBUG ? addDebugElement(document.body) : undefined;
+
+// Fields are added to this element to simplify debug printing.
 const debug = {};
 
 main();
@@ -32,27 +40,25 @@ main();
 function main() {
   console.log("Scrolling effects by @oxgr");
 
+  // Retrieve exisiting elements
   const scriptElement = document.querySelector("#scrollingEffects");
   const linkedElements = document.querySelectorAll(".linked");
   const vignetteElements = document.querySelectorAll(".vignette");
 
-  addMainElements({ scriptElement, linkedElements });
+  addLinkedToNestedContainers({ scriptElement, linkedElements });
 
-  /* mobile checks */
-  const viewportWidth = document.documentElement.clientWidth;
-  const isMobile = viewportWidth < Params.MOBILE_WIDTH_CUTOFF;
-  if (isMobile) {
-    vignetteContainer.style.paddingTop = `${Params.MOBILE_TOP_PADDING_VH}vh`;
-  }
+  // Vignette element needs to layer on global viewport
+  // and this is easier to do with `document.body`
+  addVignetteEffectElement(document.body);
 
-  /* intersection observer logic */
-  const io = createIntersectionObserver({ isMobile });
+  // Create an observer that watches the movements of elements within its bounds
+  const io = createIntersectionObserver({ isMobile: isMobile(document) });
 
-  // intersection observer listens to movements of each vignette
+  // Attach each vignette to the observer
   linkedElements.forEach((vignette) => {
     io.observe(vignette);
 
-    // // Manually unset filter on init
+    // Manually unset CSS variables on init to counteract inital sets
     resetCSS(vignette);
   });
 }
@@ -60,6 +66,11 @@ function main() {
 function resetCSS(element) {
   element.style.filter = `none`;
   element.style.transform = `rotateX(0.25turn)`;
+}
+
+function isMobile(document) {
+  const viewportWidth = document.documentElement.clientWidth;
+  return viewportWidth < Params.MOBILE_WIDTH_CUTOFF_PX;
 }
 
 function createIntersectionObserver({ isMobile }) {
@@ -72,11 +83,12 @@ function createIntersectionObserver({ isMobile }) {
 
   // Fill an array with evenly dispersed normalised values (0.0-1.0)
   // Points are used to trigger at what visibility points the callback function is triggered.
-  const intersectionThresholds = Array(Params.THRESHOLD_RATE)
+  const intersectionThresholds = Array(Params.INTERSECTION_RATE)
     .fill(0)
-    .map((_, index) => index / Params.THRESHOLD_RATE);
+    .map((_, index) => index / Params.INTERSECTION_RATE);
 
-  // Options for IntersectionObserver, `null` root uses viewport
+  // Options for IntersectionObserver
+  // - `null` root uses viewport
   const ioOptions = {
     root: null,
     rootMargin: `-${rootMarginTop}% 0% -${rootMarginBottom}% 0% `,
@@ -85,31 +97,37 @@ function createIntersectionObserver({ isMobile }) {
 
   return new IntersectionObserver(ioCallback, ioOptions);
 
-  // Function that is called when an element crosses a point in intersectionThresholds
+  /**
+   * Function that is called every an element crosses a point in `ioOptions.threshold`
+   */
   function ioCallback(entries) {
     entries.forEach((entry) => {
-      const viewportTop = entry.rootBounds.top;
-      const boundRectTop = entry.boundingClientRect.top;
-      const isHigh = boundRectTop < viewportTop;
-
-      const intRatio = entry.intersectionRatio;
-
       if (Params.DEBUG) {
         debug.boundRect = entry.boundingClientRect;
         debug.viewport = entry.rootBounds;
       }
 
+      // How much of the element is visible within the intersection bounds?
+      const intRatio = entry.intersectionRatio;
+
+      // Determine whether the element is above or below the focused center
+      const viewportTop = entry.rootBounds.top;
+      const boundRectTop = entry.boundingClientRect.top;
+      const isHigh = boundRectTop < viewportTop;
+
+      // Get the relevant CSS strings to apply
       const filterBlurString = filterBlur(intRatio);
       const transformMechString = transformMech(intRatio, isHigh);
       // const opacityString = opacity(initRatio);
 
+      // Apply the CSS strings to the style
       entry.target.style.filter = filterBlurString;
       entry.target.style.transform = transformMechString;
       // entry.target.style.opacity = opacityString;
 
       if (Params.DEBUG && entry.target.href == "04-yseult") {
-        const debugStr = JSON.stringify(debug, null, 2).replaceAll('"', "");
-        debugElement.innerHTML = `${debugStr}`;
+        const debugString = JSON.stringify(debug, null, 2).replaceAll('"', "");
+        debugElement.innerHTML = debugString;
       }
 
       return;
@@ -121,7 +139,6 @@ function createIntersectionObserver({ isMobile }) {
       }
 
       function filterBlur(ratio) {
-        // Set blur effect as a ratio of how visible an element is.
         const blurAmt =
           Params.BLUR_STRENGTH_MAX -
           Math.round(ratio * Params.BLUR_STRENGTH_MAX);
@@ -154,43 +171,41 @@ function createIntersectionObserver({ isMobile }) {
   }
 }
 
-function addMainElements({ scriptElement, linkedElements }) {
+/**
+ * Moves image elements (`.linked`) into container for greater control.
+ *
+ * `.linked` elements containing images are nested inside another element.
+ * This makes it easier to control the height of the parent element (`.vignette`),
+ * since the `.linked` elements' height can vary from CSS rotation.
+ */
+function addLinkedToNestedContainers({ scriptElement, linkedElements }) {
   const mainContainer = scriptElement.parentElement;
   const vignetteContainer = addElement(mainContainer, "div", {
     id: "vignetteContainer",
     classList: ["vignetteContainer"],
   });
 
-  // These elements need to layer on global viewport
-  // and this is easier to do with `document.body`
-  addVignetteEffectElement(document.body);
-  addIntersectionElement(document.body);
-
   linkedElements.forEach((linkedElement) => {
-    // add vignette elements into container
+    // Add vignette elements into container
     const vignetteElement = addElement(vignetteContainer, "div", {
       id: linkedElement.href,
       classList: ["vignette"],
     });
 
-    // move .linked images into vignette elements
+    // Move .linked images into vignette elements
     vignetteElement.append(linkedElement);
   });
 }
 
+/**
+ * Helper function to add elements to a given container.
+ */
 function addElement(container, tag, { id, classList }) {
   const element = document.createElement(tag);
   if (id) element.id = id;
   if (classList) element.classList.add(...classList);
   container.append(element);
   return element;
-}
-
-function addIntersectionElement(container) {
-  return addElement(container, "div", {
-    id: "intersectionMarker",
-    classList: ["passthrough"],
-  });
 }
 
 function addVignetteEffectElement(container) {
