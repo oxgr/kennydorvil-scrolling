@@ -4,29 +4,11 @@ main();
 function main() {
   console.log("Scrolling effects by @oxgr");
 
-  /* add elements */
   const scriptElement = document.querySelector("#scrollingEffects");
-  const mainContainer = scriptElement.parentElement;
-  const vignetteContainer = addElement(mainContainer, "div", {
-    id: "vignetteContainer",
-    classList: ["vignetteContainer"],
-  });
-
-  const mainParentElement = vignetteContainer.parentNode;
-  const vignetteEffectElement = addVignetteEffectElement(document.body);
-  const intersectionMarkerElement = addIntersectionElement(document.body);
   const linkedElements = document.querySelectorAll(".linked");
+  const vignetteElements = document.querySelectorAll(".vignette");
 
-  linkedElements.forEach((linkedElement) => {
-    // add vignette elements into container
-    const vignetteElement = addElement(vignetteContainer, "div", {
-      id: linkedElement.href,
-      classList: ["vignette"],
-    });
-
-    // move .linked images into vignette elements
-    vignetteElement.append(linkedElement);
-  });
+  addMainElements({ scriptElement, linkedElements });
 
   /* mobile checks */
   const MOBILE_WIDTH_CUTOFF = 640;
@@ -40,7 +22,6 @@ function main() {
   /* intersection observer logic */
   const io = createIntersectionObserver({ isMobile });
 
-  const vignetteElements = document.querySelectorAll(".vignette");
   linkedElements.forEach((vignette) => {
     io.observe(vignette);
 
@@ -201,6 +182,29 @@ function createIntersectionObserver({ isMobile }) {
       }
     });
   }
+}
+
+function addMainElements({ scriptElement, linkedElements }) {
+  const mainContainer = scriptElement.parentElement;
+  const vignetteContainer = addElement(mainContainer, "div", {
+    id: "vignetteContainer",
+    classList: ["vignetteContainer"],
+  });
+
+  const mainParentElement = vignetteContainer.parentNode;
+  const vignetteEffectElement = addVignetteEffectElement(document.body);
+  const intersectionMarkerElement = addIntersectionElement(document.body);
+
+  linkedElements.forEach((linkedElement) => {
+    // add vignette elements into container
+    const vignetteElement = addElement(vignetteContainer, "div", {
+      id: linkedElement.href,
+      classList: ["vignette"],
+    });
+
+    // move .linked images into vignette elements
+    vignetteElement.append(linkedElement);
+  });
 }
 
 function addElement(container, tag, { id, classList }) {
