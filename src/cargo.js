@@ -105,9 +105,10 @@ function createIntersectionObserver({ isMobile }) {
       // console.log(entry);
 
       const viewportCenterY = entry.rootBounds.height * 0.5;
+      const viewportTop = entry.rootBounds.top;
       const boundRectTop = entry.boundingClientRect.top;
       const boundHeightHalf = entry.boundingClientRect.height * 0.5;
-      const isHigh = boundRectTop < viewportCenterY - boundHeightHalf;
+      const isHigh = boundRectTop < viewportTop;
 
       const intRatio = entry.intersectionRatio;
 
