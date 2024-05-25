@@ -1,6 +1,8 @@
 :root {
   /* --navbarHeight: 5rem; */
   --navbarHeight: 5vh;
+
+  --mobileCutoff: 640px;
 }
 
 #debug {
@@ -56,47 +58,22 @@ html {
   scroll-behavior: smooth !important;
   /* scroll-padding-bottom: var(--navbarHeight); */
   scroll-padding-bottom: 15vh;
-}
-@media (width <= 1250px) {
-  html {
+  @media (width <= 1250px) {
     scroll-padding-bottom: 5vh;
   }
 }
 
 .vignetteContainer {
-  /* padding-top: 50vh; */
   padding-bottom: 10vh;
 
-  /* background: blue; */
-
-  /* height: calc(100vh - var(--navbarHeight)); */
-  /* overflow: scroll; */
+  @media screen and (max-width: 640px) {
+    padding-top: 40vh;
+  }
 }
 
-/* .vignette > .linked, */
 .vignetteContainer > .vignette {
   scroll-snap-align: center !important;
   scroll-snap-stop: always !important;
 
-  /* transition: 0.1s all ease-in-out; */
-
   height: min-content;
-}
-
-.vignette > .linked {
-  /* transition: 0.2s all ease-in-out; */
-  /* transform: rotateX(-0.25turn); */
-}
-
-.spin {
-  animation: spin1 1s linear;
-}
-
-@keyframes spin1 {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
 }
