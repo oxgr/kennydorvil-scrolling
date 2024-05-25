@@ -27,7 +27,16 @@ function main() {
     vignetteElement.append(linkedElement);
   });
 
-  const io = createIntersectionObserver(vignetteContainer);
+  /* mobile checks */
+  const MOBILE_WIDTH_CUTOFF = 640;
+  const TOP_PADDING_VH = 40;
+  const viewportWidth = document.documentElement.clientWidth;
+  const isMobile = viewportWidth < MOBILE_WIDTH_CUTOFF;
+  if (isMobile) {
+    vignetteContainer.style.paddingTop = `${TOP_PADDING_VH}vh`;
+  }
+
+  const io = createIntersectionObserver({ isMobile });
 
   const vignetteElements = document.querySelectorAll(".vignette");
   linkedElements.forEach((vignette) => {
@@ -43,16 +52,12 @@ function resetCSS(element) {
   element.style.transform = `rotateX(0.25turn)`;
 }
 
-function createIntersectionObserver(rootElement) {
-  const viewportWidth = document.documentElement.clientWidth;
-
+function createIntersectionObserver({ isMobile }) {
   // General approximation of bottom nav bar
   // desktop ~= 90-100px
   // mobile ~= 70-80px
   const NAVBAR_HEIGHT = 100;
 
-  const MOBILE_WIDTH_CUTOFF = 640;
-  const isMobile = viewportWidth < MOBILE_WIDTH_CUTOFF;
   const ROOT_MARGIN_TOP = isMobile ? 15 : 5;
   const ROOT_MARGIN_BOT = isMobile ? 25 : 20;
   // const ROOT_MARGIN_BOT = 20;
