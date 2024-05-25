@@ -74,7 +74,7 @@ function createIntersectionObserver({ isMobile }) {
 
   // If element is above this value, set to max (1.0 = whole element is visible)
   const BLUR_MIN_VISIBILITY_THRESHOLD = 1;
-  const MECH_MIN_VISIBILITY_THRESHOLD = 0.95;
+  const MECH_MIN_VISIBILITY_THRESHOLD = 1;
 
   //
   const MECH_ROTATE_MAX = 0.2;
