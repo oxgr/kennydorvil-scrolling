@@ -224,7 +224,24 @@ function addVignetteEffectElement(container) {
 }
 
 function addDebugElement(container) {
-  return addElement(container, "pre", {
+  const debugElement = addElement(container, "div", {
     id: "debug",
   });
+
+  const debugCheckboxElement = addElement(debugElement, "button", {
+    id: "debugCheckbox",
+  });
+  debugCheckboxElement.innerHTML = "Show debug";
+
+  const debugTextElement = addElement(debugElement, "pre", {
+    id: "debugText",
+  });
+
+  debugCheckboxElement.addEventListener("click", (e) => {
+    e.preventDefault();
+    debugTextElement.style.display =
+      debugTextElement.style.display == "none" ? "block" : "none";
+  });
+
+  return debugTextElement;
 }
