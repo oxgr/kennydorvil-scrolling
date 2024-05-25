@@ -2,8 +2,9 @@ const debugElement = addDebugElement(document.body);
 main();
 
 function main() {
-  console.log("main running from develop!");
+  console.log("Scrolling effects by @oxgr");
 
+  /* add elements */
   const scriptElement = document.querySelector("#scrollingEffects");
   const mainContainer = scriptElement.parentElement;
   const vignetteContainer = addElement(mainContainer, "div", {
@@ -36,6 +37,7 @@ function main() {
     vignetteContainer.style.paddingTop = `${TOP_PADDING_VH}vh`;
   }
 
+  /* intersection observer logic */
   const io = createIntersectionObserver({ isMobile });
 
   const vignetteElements = document.querySelectorAll(".vignette");
