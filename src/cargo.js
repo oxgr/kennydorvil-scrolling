@@ -60,9 +60,8 @@ function createIntersectionObserver({ isMobile }) {
   // mobile ~= 70-80px
   const NAVBAR_HEIGHT = 100;
 
-  const ROOT_MARGIN_TOP = isMobile ? 15 : 5;
-  const ROOT_MARGIN_BOT = isMobile ? 25 : 20;
-  // const ROOT_MARGIN_BOT = 20;
+  const ROOT_MARGIN_TOP = isMobile ? 25 : 5;
+  const ROOT_MARGIN_BOT = isMobile ? 30 : 20;
 
   // Rate at which the following callback function is called.
   const THRESHOLD_RATE = 100;
