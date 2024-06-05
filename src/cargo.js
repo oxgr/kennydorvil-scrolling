@@ -43,11 +43,8 @@ function main() {
   // Retrieve exisiting elements
   const scriptElement = document.querySelector("#scrollingEffects");
   const linkedElements = document.querySelectorAll(".linked");
-  const vignetteElements = document.querySelectorAll(".vignette");
 
-  addLinkedToNestedContainers({ scriptElement, linkedElements });
-
-  // Vignette element needs to layer on global viewport
+  // Visual vignette element needs to layer on global viewport
   // and this is easier to do with `document.body`
   addVignetteEffectElement(document.body);
 
@@ -172,32 +169,6 @@ function createIntersectionObserver({ isMobile }) {
 }
 
 /**
- * Moves image elements (`.linked`) into container for greater control.
- *
- * `.linked` elements containing images are nested inside another element.
- * This makes it easier to control the height of the parent element (`.vignette`),
- * since the `.linked` elements' height can vary from CSS rotation.
- */
-function addLinkedToNestedContainers({ scriptElement, linkedElements }) {
-  const mainContainer = scriptElement.parentElement;
-  const vignetteContainer = addElement(mainContainer, "div", {
-    id: "vignetteContainer",
-    classList: ["vignetteContainer"],
-  });
-
-  linkedElements.forEach((linkedElement) => {
-    // Add vignette elements into container
-    const vignetteElement = addElement(vignetteContainer, "div", {
-      id: linkedElement.href,
-      classList: ["vignette"],
-    });
-
-    // Move .linked images into vignette elements
-    vignetteElement.append(linkedElement);
-  });
-}
-
-/**
  * Helper function to add elements to a given container.
  */
 function addElement(container, tag, { id, classList }) {
@@ -211,7 +182,7 @@ function addElement(container, tag, { id, classList }) {
 function addVignetteEffectElement(container) {
   return addElement(container, "div", {
     id: "vignetteEffect",
-    classList: ["passthrough"],
+    classList: [],
   });
 }
 
