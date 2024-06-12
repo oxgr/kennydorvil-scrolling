@@ -9,8 +9,8 @@ html {
   scroll-snap-stop: always !important;
   scroll-behavior: smooth !important;
   /* scroll-padding-bottom: var(--navbarHeight); */
-  scroll-padding-bottom: 15vh;
-  @media (width <= 1250px) {
+  scroll-padding-bottom: 10vh;
+  @media (width <= 720px) {
     scroll-padding-bottom: 5vh;
   }
 }
@@ -18,20 +18,35 @@ html {
 .linked {
   scroll-snap-align: center !important;
   scroll-snap-stop: always !important;
+  /* min-height: 60vw; */
+
+  span {
+    z-index: 100;
+  }
 }
 
 [id="G3490697316"].page .page-content > bodycopy {
   padding-bottom: 20vh;
   padding-top: 30vh;
+  display: flex;
+  flex-flow: column;
 }
 
 .mobile [id="G3490697316"].page .page-content > bodycopy {
   padding-bottom: 10vh;
   padding-top: 45vh;
+
+  media-item {
+    max-height: 20vh;
+    z-index: 0;
+    span {
+      z-index: 100;
+    }
+  }
 }
 
 #vignetteEffect {
-  --gradient-top: 15%;
+  --gradient-top: 10%;
   --gradient-bot: 25%;
 
   height: calc(100vh - var(--navbarHeight));
@@ -68,5 +83,5 @@ html {
   height: 20vh;
   top: 20px;
   left: 20px;
-  display: none;
+  /* display: none; */
 }
