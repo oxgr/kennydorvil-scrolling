@@ -22,11 +22,11 @@ const Params = {
   //
   MECH_ROTATE_MAX: 0.2,
   MECH_PERSPECTIVE_AMT: 40,
-  MECH_SCALE_AMT: 0.3,
+  MECH_SCALE_AMT: 0.5,
 
   OPACITY_MIN: 0,
 
-  DEBUG: false,
+  DEBUG: true,
 };
 
 // Debug element to render real-time data that's too fast for console.
@@ -42,7 +42,7 @@ function main() {
 
   // Retrieve exisiting elements
   const scriptElement = document.querySelector("#scrollingEffects");
-  const linkedElements = document.querySelectorAll(".linked");
+  const vignetteElements = document.querySelectorAll(".linked");
 
   // Visual vignette element needs to layer on global viewport
   // and this is easier to do with `document.body`
@@ -52,17 +52,21 @@ function main() {
   const io = createIntersectionObserver({ isMobile: isMobile(document) });
 
   // Attach each vignette to the observer
-  linkedElements.forEach((vignette) => {
-    io.observe(vignette);
+  vignetteElements.forEach((vignette) => {
+    io.observe(vignette.shadowRoot.querySelector(".media"));
 
     // Manually unset CSS variables on init to counteract inital sets
-    resetCSS(vignette);
+    // resetCSS(vignette);
   });
 }
 
 function resetCSS(element) {
-  element.style.filter = `none`;
-  element.style.transform = `rotateX(0.25turn)`;
+  const imgElement = element.shadowRoot.querySelector("img.media");
+  imgElement.style.filter = filterBlurString;
+  imgElement.style.transform = transformMechString;
+
+  // element.style.filter = `none`;
+  // element.style.transform = `rotateX(0.25turn)`;
 }
 
 function isMobile(document) {
@@ -100,8 +104,8 @@ function createIntersectionObserver({ isMobile }) {
   function ioCallback(entries) {
     entries.forEach((entry) => {
       if (Params.DEBUG) {
-        debug.boundRect = entry.boundingClientRect;
-        debug.viewport = entry.rootBounds;
+        // debug.boundRect = entry.boundingClientRect;
+        // debug.viewport = entry.rootBounds;
       }
 
       // How much of the element is visible within the intersection bounds?
@@ -118,11 +122,22 @@ function createIntersectionObserver({ isMobile }) {
       // const opacityString = opacity(initRatio);
 
       // Apply the CSS strings to the style
-      entry.target.style.filter = filterBlurString;
-      entry.target.style.transform = transformMechString;
-      // entry.target.style.opacity = opacityString;
+      // const imgElement = entry.target.shadowRoot.querySelector("img.media");
+      const imgElement = entry.target;
+      imgElement.style.filter = filterBlurString;
+      imgElement.style.transform = transformMechString;
+      //
+      // entry.target.style.filter = filterBlurString;
+      // entry.target.style.transform = transformMechString;
 
-      if (Params.DEBUG && entry.target.href == "04-yseult") {
+      // Fade in captions
+      const imageCaptionElement = entry.target.querySelector(".image-caption");
+      if (imageCaptionElement)
+        imageCaptionElement.style.opacity = intRatio * intRatio;
+
+      if (Params.DEBUG && entry.target.href.includes("02")) {
+        console.log(imgElement.style);
+        debug.img = imgElement.style[0];
         const debugString = JSON.stringify(debug, null, 2).replaceAll('"', "");
         debugElement.innerHTML = debugString;
       }
