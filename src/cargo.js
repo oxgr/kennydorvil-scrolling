@@ -29,11 +29,7 @@ const Params = {
   DEBUG: true,
 };
 
-// Debug element to render real-time data that's too fast for console.
-const debugElement = Params.DEBUG ? addDebugElement(document.body) : undefined;
-
-// Fields are added to this element to simplify debug printing.
-const debug = {};
+const debug = Debug(Params.DEBUG);
 
 main();
 
@@ -53,7 +49,8 @@ function main() {
 
   // Attach each vignette to the observer
   vignetteElements.forEach((vignette) => {
-    io.observe(vignette.shadowRoot.querySelector(".media"));
+    // io.observe(vignette.shadowRoot.querySelector(".media"));
+    io.observe(vignette);
 
     // Manually unset CSS variables on init to counteract inital sets
     // resetCSS(vignette);
@@ -103,11 +100,6 @@ function createIntersectionObserver({ isMobile }) {
    */
   function ioCallback(entries) {
     entries.forEach((entry) => {
-      if (Params.DEBUG) {
-        // debug.boundRect = entry.boundingClientRect;
-        // debug.viewport = entry.rootBounds;
-      }
-
       // How much of the element is visible within the intersection bounds?
       const intRatio = entry.intersectionRatio;
 
@@ -122,24 +114,26 @@ function createIntersectionObserver({ isMobile }) {
       // const opacityString = opacity(initRatio);
 
       // Apply the CSS strings to the style
-      // const imgElement = entry.target.shadowRoot.querySelector("img.media");
-      const imgElement = entry.target;
+      const imgElement = entry.target.shadowRoot.querySelector("img.media");
+      // const imgElement = entry.target;
       imgElement.style.filter = filterBlurString;
       imgElement.style.transform = transformMechString;
-      //
+
       // entry.target.style.filter = filterBlurString;
       // entry.target.style.transform = transformMechString;
+      // entry.target.style.outline = `solid ${intRatio * 10}px red`;
 
       // Fade in captions
       const imageCaptionElement = entry.target.querySelector(".image-caption");
       if (imageCaptionElement)
         imageCaptionElement.style.opacity = intRatio * intRatio;
 
-      if (Params.DEBUG && entry.target.href.includes("02")) {
-        console.log(imgElement.style);
-        debug.img = imgElement.style[0];
-        const debugString = JSON.stringify(debug, null, 2).replaceAll('"', "");
-        debugElement.innerHTML = debugString;
+      // debug.boundRect = entry.boundingClientRect;
+      // debug.viewport = entry.rootBounds;
+      debug.add("outline", entry.target.style.outline);
+
+      if (Params.DEBUG && entry.target.href.includes("04")) {
+        debug.print();
       }
 
       return;
@@ -222,4 +216,29 @@ function addDebugElement(container) {
   });
 
   return debugTextElement;
+}
+
+class Debug {
+  constructor(enable) {
+    this.enabled = enable;
+
+    /*
+     * this.bug element to render real-time data that's too fast for console.
+     */
+    this.element = addthis.bugElement(document.body);
+
+    // Fields are added to this element to simplify debug printing.
+    this.obj = {};
+  }
+
+  add(key, val) {
+    if (!this.enabled) return;
+    this.obj[key] = val;
+  }
+
+  print() {
+    if (!this.enabled) return;
+    const debugString = JSON.stringify(this.obj, null, 2).replaceAll('"', "");
+    this.element.innerHTML = debugString;
+  }
 }
