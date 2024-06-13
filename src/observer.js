@@ -47,22 +47,14 @@ export function createIntersectionObserver(container) {
       // const opacityString = opacity(initRatio);
 
       // Apply the CSS strings to the style
-      const imgElement = entry.target.shadowRoot.querySelector("img.media");
-      // const imgElement = entry.target;
-      imgElement.style.filter = filterBlurString;
-      imgElement.style.transform = transformMechString;
-
-      // entry.target.style.filter = filterBlurString;
-      // entry.target.style.transform = transformMechString;
-      // entry.target.style.outline = `solid ${intRatio * 10}px red`;
+      entry.target.style.filter = filterBlurString;
+      entry.target.style.transform = transformMechString;
 
       // Fade in captions
       const imageCaptionElement = entry.target.querySelector(".image-caption");
       if (imageCaptionElement)
         imageCaptionElement.style.opacity = intRatio * intRatio;
 
-      // debug.boundRect = entry.boundingClientRect;
-      // debug.viewport = entry.rootBounds;
       debug.add("outline", entry.target);
 
       if (Params.DEBUG && entry.target.href.includes("02")) {
