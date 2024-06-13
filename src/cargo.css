@@ -19,17 +19,21 @@ html {
   scroll-snap-align: center !important;
   scroll-snap-stop: always !important;
   /* min-height: 60vw; */
+  max-height: 40vw;
+  transition: 0.1s linear transform;
 }
 
 media-item .image-caption {
-  transition: 2s ease-out all;
+  transition: 3s ease-out all;
   opacity: 0;
   filter: blur(20px);
   transform: translateY(10%);
+
+  z-index: 20;
 }
 
 media-item .image-caption.captionVisible {
-  /* animation-name: fadeTitle; */
+  /* animation-name: fadeIn; */
   /* animation-duration: 1s; */
   /* animation-delay: 0.5s; */
   /* animation-timing-function: ease-out; */
@@ -40,22 +44,26 @@ media-item .image-caption.captionVisible {
   transform: translateY(0%);
 }
 
-@keyframes fadeTitle {
+@keyframes fadeIn {
   from {
     filter: blur(20px);
     opacity: 0;
+    transform: translateY(10%);
   }
   to {
     filter: blur(0px);
     opacity: 1;
+    transform: translateY(0%);
   }
 }
 
 [id="G3490697316"].page .page-content > bodycopy {
   padding-bottom: 10vh;
-  padding-top: 30vh;
+  padding-top: 25vh;
   display: flex;
   flex-flow: column;
+  max-width: 90vw;
+  margin: 0 auto;
 }
 
 .mobile [id="G3490697316"].page .page-content > bodycopy {
