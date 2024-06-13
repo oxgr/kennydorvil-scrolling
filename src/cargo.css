@@ -9,8 +9,8 @@ html {
   scroll-snap-stop: always !important;
   scroll-behavior: smooth !important;
   /* scroll-padding-bottom: var(--navbarHeight); */
-  scroll-padding-bottom: 15vh;
-  @media (width <= 1250px) {
+  scroll-padding-bottom: 10vh;
+  @media (width <= 720px) {
     scroll-padding-bottom: 5vh;
   }
 }
@@ -18,25 +18,45 @@ html {
 .linked {
   scroll-snap-align: center !important;
   scroll-snap-stop: always !important;
+  /* min-height: 60vw; */
+
+  span {
+    z-index: 100;
+  }
+}
+
+media-item > .caption {
+  outline: solid 2px red;
+  z-index: 100;
+  transform: none !important;
 }
 
 [id="G3490697316"].page .page-content > bodycopy {
   padding-bottom: 20vh;
   padding-top: 30vh;
+  display: flex;
+  flex-flow: column;
 }
 
 .mobile [id="G3490697316"].page .page-content > bodycopy {
   padding-bottom: 10vh;
   padding-top: 45vh;
+
+  media-item {
+    max-height: 20vh;
+  }
 }
 
 #vignetteEffect {
-  --gradient-top: 15%;
+  --gradient-top: 10%;
   --gradient-bot: 25%;
 
   height: calc(100vh - var(--navbarHeight));
   width: 100vw;
   position: fixed !important;
+  z-index: 10;
+  /* allow links to pass through */
+  pointer-events: none;
 
   background: linear-gradient(
     black,
@@ -45,10 +65,6 @@ html {
     calc(100% - var(--gradient-bot)),
     black
   );
-  z-index: 10;
-
-  /* allow links to pass through */
-  pointer-events: none;
 }
 
 #intersectionMarker {
@@ -68,5 +84,5 @@ html {
   height: 20vh;
   top: 20px;
   left: 20px;
-  display: none;
+  /* display: none; */
 }
