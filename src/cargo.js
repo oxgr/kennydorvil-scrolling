@@ -13,7 +13,7 @@ function main() {
 
   // Visual vignette element needs to layer on global viewport
   // and this is easier to do with `document.body`
-  addVignetteEffectElement(document.body);
+  // addVignetteEffectElement(document.body);
 
   // Create an observer that watches the movements of elements within its bounds
   const io = createIntersectionObserver(document);
