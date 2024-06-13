@@ -19,16 +19,36 @@ html {
   scroll-snap-align: center !important;
   scroll-snap-stop: always !important;
   /* min-height: 60vw; */
-
-  span {
-    z-index: 100;
-  }
 }
 
-media-item > .caption {
-  outline: solid 2px red;
-  z-index: 100;
-  transform: none !important;
+media-item .image-caption {
+  transition: 2s ease-out all;
+  opacity: 0;
+  filter: blur(20px);
+  transform: translateY(10%);
+}
+
+media-item .image-caption.captionVisible {
+  /* animation-name: fadeTitle; */
+  /* animation-duration: 1s; */
+  /* animation-delay: 0.5s; */
+  /* animation-timing-function: ease-out; */
+  /* animation-iteration-count: 1; */
+
+  opacity: 1;
+  filter: blur(0px);
+  transform: translateY(0%);
+}
+
+@keyframes fadeTitle {
+  from {
+    filter: blur(20px);
+    opacity: 0;
+  }
+  to {
+    filter: blur(0px);
+    opacity: 1;
+  }
 }
 
 [id="G3490697316"].page .page-content > bodycopy {
