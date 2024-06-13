@@ -1,69 +1,18 @@
 :root {
   /* --navbarHeight: 5rem; */
   --navbarHeight: 5vh;
-
   --mobileCutoff: 640px;
 }
+
 html {
   scroll-snap-type: y proximity !important;
   scroll-snap-stop: always !important;
   scroll-behavior: smooth !important;
-  /* scroll-padding-bottom: var(--navbarHeight); */
   scroll-padding-bottom: 10vh;
+
   @media (width <= 720px) {
     scroll-padding-bottom: 5vh;
   }
-}
-
-.linked {
-  scroll-snap-align: center !important;
-  scroll-snap-stop: always !important;
-  /* min-height: 60vw; */
-  max-height: 40vw;
-  transition: 0.1s linear transform;
-}
-
-media-item .image-caption {
-  transition: 3s ease-out all;
-  opacity: 0;
-  filter: blur(20px);
-  transform: translateY(10%);
-
-  z-index: 20;
-}
-
-media-item .image-caption.captionVisible {
-  /* animation-name: fadeIn; */
-  /* animation-duration: 1s; */
-  /* animation-delay: 0.5s; */
-  /* animation-timing-function: ease-out; */
-  /* animation-iteration-count: 1; */
-
-  opacity: 1;
-  filter: blur(0px);
-  transform: translateY(0%);
-}
-
-@keyframes fadeIn {
-  from {
-    filter: blur(20px);
-    opacity: 0;
-    transform: translateY(10%);
-  }
-  to {
-    filter: blur(0px);
-    opacity: 1;
-    transform: translateY(0%);
-  }
-}
-
-[id="G3490697316"].page .page-content > bodycopy {
-  padding-bottom: 10vh;
-  padding-top: 25vh;
-  display: flex;
-  flex-flow: column;
-  max-width: 90vw;
-  margin: 0 auto;
 }
 
 .mobile [id="G3490697316"].page .page-content > bodycopy {
@@ -72,6 +21,61 @@ media-item .image-caption.captionVisible {
 
   media-item {
     max-height: 20vh;
+  }
+}
+
+[id="G3490697316"].page .page-content > bodycopy {
+  padding-bottom: 10vh;
+  padding-top: 25vh;
+
+  max-width: 90vw;
+  margin: 0 auto;
+
+  display: flex;
+  flex-flow: column;
+
+  .linked {
+    scroll-snap-align: center !important;
+    scroll-snap-stop: always !important;
+    /* min-height: 60vw; */
+    max-height: 40vw;
+    transition: 0.1s linear transform;
+
+    margin-bottom: 2rem;
+  }
+
+  media-item .caption {
+    transition: 2s ease-out all;
+    opacity: 0;
+    filter: blur(20px);
+    transform: translateY(10%);
+
+    z-index: 20;
+  }
+
+  media-item .caption.captionVisible {
+    /* animation-name: fadeIn; */
+    /* animation-duration: 1s; */
+    /* animation-delay: 0.5s; */
+    /* animation-timing-function: ease-out; */
+    /* animation-iteration-count: 1; */
+
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0%);
+  }
+
+  @keyframes fadeIn {
+    from {
+      filter: blur(20px);
+      opacity: 0;
+      transform: translateY(10%);
+    }
+    to {
+      filter: blur(0px);
+      opacity: 1;
+      transform: translateY(0%);
+    }
   }
 }
 
