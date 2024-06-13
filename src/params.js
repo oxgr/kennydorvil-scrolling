@@ -29,7 +29,7 @@ export const Params = {
   OPACITY_MIN: 0,
 
   // Minimum amount an image is visible before the caption fades in
-  CAPTION_FADEIN_THRESHOLD: 0.5,
+  CAPTION_FADEIN_THRESHOLD: 0.8,
 
   DEBUG: false,
 };

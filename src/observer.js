@@ -46,9 +46,13 @@ export function createIntersectionObserver(container) {
       const transformMechString = transformMech(intRatio, isHigh);
       // const opacityString = opacity(initRatio);
 
-      const targetElement =
-        entry.target.shadowRoot.lastChild.firstChild.firstChild.firstChild
-          .firstChild;
+      // const targetElement =
+      //   entry.target.shadowRoot.lastChild.firstChild.firstChild.firstChild
+      //     .firstChild;
+      //
+      // Retrieve the image element inside the `media-item` custom element from Cargo.
+      const targetElement = entry.target.shadowRoot.querySelector(".media");
+
       // Apply the CSS strings to the style
       targetElement.style.filter = filterBlurString;
       targetElement.style.transform = transformMechString;
