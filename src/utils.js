@@ -1,12 +1,8 @@
 import { Params } from "./params.js";
 
 export function resetCSS(element) {
-  const imgElement = element.shadowRoot.querySelector("img.media");
-  imgElement.style.filter = filterBlurString;
-  imgElement.style.transform = transformMechString;
-
-  // element.style.filter = `none`;
-  // element.style.transform = `rotateX(0.25turn)`;
+  element.style.filter = `none`;
+  element.style.transform = `none`;
 }
 
 export function getIsMobile(document, cutoff) {

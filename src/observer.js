@@ -46,14 +46,17 @@ export function createIntersectionObserver(container) {
       const transformMechString = transformMech(intRatio, isHigh);
       // const opacityString = opacity(initRatio);
 
+      const targetElement =
+        entry.target.shadowRoot.lastChild.firstChild.firstChild.firstChild
+          .firstChild;
       // Apply the CSS strings to the style
-      entry.target.style.filter = filterBlurString;
-      entry.target.style.transform = transformMechString;
+      targetElement.style.filter = filterBlurString;
+      targetElement.style.transform = transformMechString;
 
       // Fade in captions
-      const imageCaptionElement = entry.target.querySelector(".image-caption");
-      if (imageCaptionElement)
-        imageCaptionElement.style.opacity = intRatio * intRatio;
+      const imageCaptionElement = entry.target.querySelector(".caption");
+      const captionOffset = 0.5;
+      if (imageCaptionElement) imageCaptionElement.style.opacity = intRatio;
 
       debug.add("outline", entry.target);
 

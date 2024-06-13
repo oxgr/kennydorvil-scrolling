@@ -1,5 +1,6 @@
 import { createIntersectionObserver } from "./observer.js";
 import { addVignetteEffectElement } from "./element.js";
+import { resetCSS } from "./utils.js";
 
 main();
 
@@ -23,6 +24,6 @@ function main() {
     io.observe(vignette);
 
     // Manually unset CSS variables on init to counteract inital sets
-    // resetCSS(vignette);
+    resetCSS(vignette);
   });
 }
