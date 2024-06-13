@@ -33,6 +33,7 @@ html {
 
   display: flex;
   flex-flow: column;
+  gap: 4rem;
 
   .linked {
     scroll-snap-align: center !important;
@@ -40,12 +41,10 @@ html {
     /* min-height: 60vw; */
     max-height: 40vw;
     transition: 0.1s linear transform;
-
-    margin-bottom: 2rem;
   }
 
   media-item .caption {
-    transition: 2s ease-out all;
+    transition: 0.8s ease-out all;
     opacity: 0;
     filter: blur(20px);
     transform: translateY(10%);

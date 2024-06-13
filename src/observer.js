@@ -56,7 +56,7 @@ export function createIntersectionObserver(container) {
       // Fade in captions
       const captionElement = entry.target.querySelector(".caption");
       if (captionElement) {
-        if (intRatio > 0.8) {
+        if (intRatio > Params.CAPTION_FADEIN_THRESHOLD) {
           captionElement.classList.add("captionVisible");
         } else {
           captionElement.classList.remove("captionVisible");
