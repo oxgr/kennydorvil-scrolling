@@ -53,7 +53,7 @@ html {
     z-index: 20;
 
     position: absolute;
-    top: calc(50% - 2em);
+    top: calc(50% - 1em);
     text-align: center;
   }
 
