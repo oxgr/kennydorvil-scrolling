@@ -34,7 +34,7 @@ html {
 
   display: flex;
   flex-flow: column;
-  gap: 4rem;
+  gap: 6rem;
 
   .linked {
     scroll-snap-align: center !important;
@@ -51,6 +51,10 @@ html {
     transform: translateY(10%);
 
     z-index: 20;
+
+    position: absolute;
+    top: calc(50% - 1em);
+    text-align: center;
   }
 
   media-item .caption.captionVisible {
