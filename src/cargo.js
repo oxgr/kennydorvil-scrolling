@@ -1,7 +1,7 @@
 import { Params } from "./params.js";
 import { createIntersectionObserver } from "./observer.js";
 import { addVignetteEffectElement } from "./element.js";
-import { resetCSS } from "./utils.js";
+import { setVignetteCssDefault } from "./utils.js";
 
 main();
 
@@ -31,7 +31,9 @@ function main() {
       vignette.querySelector(".caption")?.classList.add("fadeIn");
     }
 
-    // Manually unset CSS variables on init to counteract inital sets
-    resetCSS(vignette);
+    // Manually unset CSS variables on init for all except first vignette
+    if (!vignette.href.includes("01")) {
+      setVignetteCssDefault(vignette);
+    }
   });
 }
