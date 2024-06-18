@@ -1,6 +1,6 @@
 import { Params } from "./params.js";
 import { debug } from "./debug.js";
-import { getIsMobile } from "./utils.js";
+import { applyVignetteCss, getIsMobile } from "./utils.js";
 
 export function createIntersectionObserver(container) {
   const isMobile = getIsMobile(container);
@@ -36,7 +36,9 @@ export function createIntersectionObserver(container) {
    */
   function ioCallback(entries) {
     entries.forEach((entry) => {
-      // How much of the element is visible within the intersection bounds?
+      const vignette = entry.target;
+
+      // How much the element is visible within the intersection bounds
       const intRatio = entry.intersectionRatio;
 
       // Determine whether the element is above or below the focused center
@@ -49,16 +51,15 @@ export function createIntersectionObserver(container) {
       const transformMechString = transformMech(intRatio, isHigh);
       // const opacityString = opacity(initRatio);
 
-      // Retrieve the image element inside the `media-item` custom element from Cargo.
-      const targetElement = entry.target.shadowRoot.querySelector(".media");
-
       // Apply the CSS strings to the style
-      targetElement.style.filter = filterBlurString;
-      targetElement.style.transform = transformMechString;
+      applyVignetteCss(vignette, {
+        filter: filterBlurString,
+        transform: transformMechString,
+      });
 
       // Fade in captions
       if (Params.CAPTION_FADEIN_ENABLE) {
-        const captionElement = entry.target.querySelector(".caption");
+        const captionElement = vignette.querySelector(".caption");
         if (captionElement) {
           captionElement.style.filter = filterBlurString;
           if (intRatio > Params.CAPTION_FADEIN_THRESHOLD) {
@@ -69,7 +70,7 @@ export function createIntersectionObserver(container) {
         }
       }
 
-      if (Params.DEBUG && entry.target.href.includes("02")) {
+      if (Params.DEBUG && vignette.href?.includes("02")) {
         debug.print();
       }
 
