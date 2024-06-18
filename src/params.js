@@ -28,6 +28,9 @@ export const Params = {
   // Can be negative.
   OPACITY_MIN: 0,
 
+  // Enable fadein of vignette caption titles
+  CAPTION_FADEIN_ENABLE: false,
+
   // Minimum amount an image is visible before the caption fades in
   CAPTION_FADEIN_THRESHOLD: 0.8,
 

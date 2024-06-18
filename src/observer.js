@@ -58,12 +58,15 @@ export function createIntersectionObserver(container) {
       targetElement.style.transform = transformMechString;
 
       // Fade in captions
-      const captionElement = entry.target.querySelector(".caption");
-      if (captionElement) {
-        if (intRatio > Params.CAPTION_FADEIN_THRESHOLD) {
-          captionElement.classList.add("captionVisible");
-        } else {
-          captionElement.classList.remove("captionVisible");
+      if (Params.CAPTION_FADEIN_ENABLE) {
+        const captionElement = entry.target.querySelector(".caption");
+        if (captionElement) {
+          captionElement.style.filter = filterBlurString;
+          if (intRatio > Params.CAPTION_FADEIN_THRESHOLD) {
+            captionElement.classList.add("captionVisible");
+          } else {
+            captionElement.classList.remove("captionVisible");
+          }
         }
       }
       // imageCaptionElement.style.opacity = (() => {

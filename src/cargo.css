@@ -36,7 +36,7 @@ html {
   flex-flow: column;
   gap: 6rem;
 
-  .linked {
+  media-item.linked {
     scroll-snap-align: center !important;
     scroll-snap-stop: always !important;
     /* min-height: 60vw; */
@@ -44,7 +44,7 @@ html {
     transition: 0.1s linear transform;
   }
 
-  media-item .caption {
+  media-item .caption.fadeIn {
     transition: 0.8s ease-out all;
     opacity: 0;
     filter: blur(20px);
@@ -57,7 +57,7 @@ html {
     text-align: center;
   }
 
-  media-item .caption.captionVisible {
+  media-item .caption.fadeIn.captionVisible {
     /* animation-name: fadeIn; */
     /* animation-duration: 1s; */
     /* animation-delay: 0.5s; */
