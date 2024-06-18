@@ -1,9 +1,4 @@
-:root {
-  /* --navbarHeight: 5rem; */
-  --navbarHeight: 5vh;
-  --mobileCutoff: 640px;
-}
-
+/* Setup scroll snapping to root container */
 html {
   scroll-snap-type: y proximity !important;
   scroll-snap-stop: always !important;
@@ -15,6 +10,9 @@ html {
   }
 }
 
+/* ID of the page is derived from Cargo page generation */
+
+/* Mobile settings */
 .mobile [id="G3490697316"].page .page-content > bodycopy {
   padding-bottom: 10vh;
   padding-top: 45vh;
@@ -25,6 +23,7 @@ html {
   }
 }
 
+/* Main (desktop) settings */
 [id="G3490697316"].page .page-content > bodycopy {
   padding-bottom: 10vh;
   padding-top: 25vh;
@@ -45,10 +44,10 @@ html {
   }
 
   media-item .caption.fadeIn {
-    transition: 0.8s ease-out all;
+    transition: 0.3s ease-out all;
     opacity: 0;
-    filter: blur(20px);
-    transform: translateY(10%);
+    /* filter: blur(20px); */
+    /* transform: translateY(10%); */
 
     z-index: 20;
 
@@ -58,15 +57,17 @@ html {
   }
 
   media-item .caption.fadeIn.captionVisible {
+    opacity: 1;
+    /* filter: blur(0px); */
+    /* transform: translateY(0%); */
+
+    /* Optionally, we can use an animation - useful for adding a delay before the effect. */
+    /* */
     /* animation-name: fadeIn; */
     /* animation-duration: 1s; */
     /* animation-delay: 0.5s; */
     /* animation-timing-function: ease-out; */
     /* animation-iteration-count: 1; */
-
-    opacity: 1;
-    filter: blur(0px);
-    transform: translateY(0%);
   }
 
   @keyframes fadeIn {
@@ -83,6 +84,7 @@ html {
   }
 }
 
+/* Top-layer visual vignette effect */
 #vignetteEffect {
   --gradient-top: 10%;
   --gradient-bot: 25%;
@@ -103,22 +105,26 @@ html {
   );
 }
 
-#intersectionMarker {
-  --height: 70vh;
-  outline: solid 1px red;
-  height: var(--height);
-  top: calc((50vh - (var(--height) * 0.5)) - var(--navbarHeight));
-  width: 100%;
-  position: fixed;
-  display: none;
-}
+:root {
+  --navbarHeight: 5vh;
 
-#debug {
-  z-index: 100;
-  color: white;
-  position: fixed;
-  height: 20vh;
-  top: 20px;
-  left: 20px;
-  /* display: none; */
+  #intersectionMarker {
+    --height: 70vh;
+    outline: solid 1px red;
+    height: var(--height);
+    top: calc((50vh - (var(--height) * 0.5)) - var(--navbarHeight));
+    width: 100%;
+    position: fixed;
+    display: none;
+  }
+
+  #debug {
+    z-index: 100;
+    color: white;
+    position: fixed;
+    height: 20vh;
+    top: 20px;
+    left: 20px;
+    /* display: none; */
+  }
 }

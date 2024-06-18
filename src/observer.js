@@ -19,11 +19,14 @@ export function createIntersectionObserver(container) {
     .map((_, index) => index / Params.INTERSECTION_RATE);
 
   // Options for IntersectionObserver
-  // - `null` root uses viewport
   const ioOptions = {
-    root: null,
-    rootMargin: `-${rootMarginTop}% 0% -${rootMarginBottom}% 0% `,
     threshold: intersectionThresholds,
+
+    // `null` root uses viewport
+    root: null,
+
+    // root margins are set as negative values to narrow down the viewport into a smaller container.
+    rootMargin: `-${rootMarginTop}% 0% -${rootMarginBottom}% 0% `,
   };
 
   return new IntersectionObserver(ioCallback, ioOptions);
@@ -46,10 +49,6 @@ export function createIntersectionObserver(container) {
       const transformMechString = transformMech(intRatio, isHigh);
       // const opacityString = opacity(initRatio);
 
-      // const targetElement =
-      //   entry.target.shadowRoot.lastChild.firstChild.firstChild.firstChild
-      //     .firstChild;
-      //
       // Retrieve the image element inside the `media-item` custom element from Cargo.
       const targetElement = entry.target.shadowRoot.querySelector(".media");
 
@@ -69,14 +68,6 @@ export function createIntersectionObserver(container) {
           }
         }
       }
-      // imageCaptionElement.style.opacity = (() => {
-      //   const offset = 0.5;
-      //   if (intRatio < offset) return 0;
-      //
-      //   return offset + intRatio * offset;
-      // })();
-
-      debug.add("outline", entry.target);
 
       if (Params.DEBUG && entry.target.href.includes("02")) {
         debug.print();
@@ -108,14 +99,6 @@ export function createIntersectionObserver(container) {
 
         const scaleOffset = 1 - Params.MECH_SCALE_AMT;
         const scaleAmt = scaleOffset + ratio * Params.MECH_SCALE_AMT;
-
-        if (Params.DEBUG) {
-          debug.rotateAmtBase = rotateAmtBase;
-          debug.rotateAmt = rotateAmt;
-          debug.rotateRatio = ratio;
-          debug.scaleAmt = scaleAmt;
-          debug.initRatio = ratio;
-        }
 
         return `perspective(${perspectiveAmt}vw) rotateX(${rotateAmt}turn) scale(${scaleAmt})  `;
       }
