@@ -2,7 +2,7 @@ import { Params } from "./params.js";
 
 export function applyVignetteCss(vignette, { filter, transform }) {
   // Retrieve the image element inside the `media-item` custom element from Cargo.
-  const targetElement = vignette.shadowRoot.querySelector(".media");
+  const targetElement = vignette.shadowRoot?.querySelector(".media");
 
   // Apply the CSS strings to the style
   targetElement.style.filter = filter;

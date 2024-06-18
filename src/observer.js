@@ -70,7 +70,7 @@ export function createIntersectionObserver(container) {
         }
       }
 
-      if (Params.DEBUG && vignette.href.includes("02")) {
+      if (Params.DEBUG && vignette.href?.includes("02")) {
         debug.print();
       }
 

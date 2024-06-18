@@ -32,7 +32,7 @@ function main() {
     }
 
     // Manually unset CSS variables on init for all except first vignette
-    if (!vignette.href.includes("01")) {
+    if (!vignette.href?.includes("01")) {
       setVignetteCssDefault(vignette);
     }
   });
