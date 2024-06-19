@@ -1,7 +1,12 @@
 import { Params } from "./params.js";
 import { createIntersectionObserver } from "./observer.js";
 import { addVignetteEffectElement } from "./element.js";
-import { setVignetteCssDefault } from "./utils.js";
+import {
+  setVignetteCssDefault,
+  getMediaItems,
+  observeElementsInArray,
+  generatePageChangeFn,
+} from "./utils.js";
 
 main();
 
@@ -9,8 +14,7 @@ function main() {
   console.log("Scrolling effects by @oxgr");
 
   // Retrieve exisiting elements
-  const scriptElement = document.querySelector("#scrollingEffects");
-  const vignetteElements = document.querySelectorAll(".linked");
+  const vignetteElements = getMediaItems(document);
 
   // Visual vignette element needs to layer on global viewport
   // and this is easier to do with `document.body`
@@ -19,13 +23,11 @@ function main() {
   // addVignetteEffectElement(document.body);
 
   // Create an observer that watches the movements of elements within its bounds
-  const io = createIntersectionObserver(document);
+  const scrollObserver = createIntersectionObserver(document);
 
-  // Attach each vignette to the observer
+  observeElementsInArray(scrollObserver, vignetteElements);
+
   vignetteElements.forEach((vignette) => {
-    // io.observe(vignette.shadowRoot.querySelector(".media"));
-    io.observe(vignette);
-
     // Set a custom class name to prep caption fade in if enabled.
     if (Params.CAPTION_FADEIN_ENABLE) {
       vignette.querySelector(".caption")?.classList.add("fadeIn");
@@ -36,4 +38,22 @@ function main() {
       setVignetteCssDefault(vignette);
     }
   });
+
+  // Generate detector function that compares against the home page
+  const pageChanged = generatePageChangeFn("/");
+
+  // Set up a watcher to observe new references to elements
+  // See: README.md#preact-virtual-dom-resets-observer-references
+  setInterval(() => {
+    if (!pageChanged(window.location.pathname)) return;
+
+    // Remove old references
+    scrollObserver.disconnect();
+
+    // Query new references
+    const newVignetteElements = getMediaItems(document);
+
+    // Set observer again
+    observeElementsInArray(scrollObserver, newVignetteElements);
+  }, Params.OBSERVER_RESET_WATCHER_INTERVAL);
 }

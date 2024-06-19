@@ -1,8 +1,14 @@
 import { Params } from "./params.js";
 
+export function getVignetteImg(vignette) {
+  return vignette.shadowRoot?.querySelector(".media");
+}
+
 export function applyVignetteCss(vignette, { filter, transform }) {
   // Retrieve the image element inside the `media-item` custom element from Cargo.
-  const targetElement = vignette.shadowRoot?.querySelector(".media");
+  const targetElement = getVignetteImg(vignette);
+  if (!targetElement) throw Error("Vignette does not have a .media element!");
+  // console.log(targetElement);
 
   // Apply the CSS strings to the style
   targetElement.style.filter = filter;
@@ -25,4 +31,43 @@ export function setVignetteCssDefault(vignette) {
 export function getIsMobile(document, cutoff) {
   const viewportWidth = document.documentElement.clientWidth;
   return viewportWidth < Params.MOBILE_WIDTH_CUTOFF_PX;
+}
+
+export function getMediaItems(container) {
+  const mediaItemsCollection = container.getElementsByTagName("media-item");
+  const mediaItems = Object.values(mediaItemsCollection).sort();
+  return mediaItems;
+}
+
+/*
+ * Attach each vignette to the observer
+ **/
+export function observeElementsInArray(observer, elementArray) {
+  elementArray.forEach((vignette) => {
+    observer.observe(vignette);
+  });
+}
+
+/**
+ * Generator with a closure that keeps track of whether the page has changed from the given URL.
+ *
+ * @param {string} rootPath - path to compare against
+ * @return {(pathname) => boolean} - function to check whether the page changed.
+ */
+export function generatePageChangeFn(rootPath) {
+  let urlChanged = false;
+
+  return (pathname) => {
+    const isHomePage = pathname == rootPath;
+
+    if (!isHomePage && !urlChanged) {
+      urlChanged = true;
+      return false;
+    }
+
+    if (!isHomePage || !urlChanged) return false;
+
+    urlChanged = false;
+    return true;
+  };
 }

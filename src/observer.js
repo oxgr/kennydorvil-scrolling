@@ -1,6 +1,6 @@
 import { Params } from "./params.js";
 import { debug } from "./debug.js";
-import { applyVignetteCss, getIsMobile } from "./utils.js";
+import { applyVignetteCss, getIsMobile, getVignetteImg } from "./utils.js";
 
 export function createIntersectionObserver(container) {
   const isMobile = getIsMobile(container);
@@ -37,6 +37,7 @@ export function createIntersectionObserver(container) {
   function ioCallback(entries) {
     entries.forEach((entry) => {
       const vignette = entry.target;
+      if (!getVignetteImg(vignette)) return;
 
       // How much the element is visible within the intersection bounds
       const intRatio = entry.intersectionRatio;
@@ -52,10 +53,14 @@ export function createIntersectionObserver(container) {
       // const opacityString = opacity(initRatio);
 
       // Apply the CSS strings to the style
-      applyVignetteCss(vignette, {
-        filter: filterBlurString,
-        transform: transformMechString,
-      });
+      try {
+        applyVignetteCss(vignette, {
+          filter: filterBlurString,
+          transform: transformMechString,
+        });
+      } catch (err) {
+        console.error(err);
+      }
 
       // Fade in captions
       if (Params.CAPTION_FADEIN_ENABLE) {

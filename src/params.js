@@ -34,5 +34,8 @@ export const Params = {
   // Minimum amount an image is visible before the caption fades in
   CAPTION_FADEIN_THRESHOLD: 0.8,
 
+  // Interval in ms between checks to see if the observer needs to update its element references
+  OBSERVER_RESET_WATCHER_INTERVAL: 200,
+
   DEBUG: false,
 };

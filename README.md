@@ -83,3 +83,19 @@ Run `npm run build` and see artifacts in `dist/`.
 On building the bundle, the resulting `dist/index.js` gives an error `c is undefined` when run and breaks the intended effect. This error does not occur when running `src/cargo.js`.
 
 Due to this, the production site currently runs `src/cargo.js`. The difference is size (2.3KB `dist` vs 8.5KB `src`) might seem like a big percentage, but is still small enough to be negligible.
+
+### Preact virtual DOM resets Observer references
+
+Cargo uses Preact to build a Cargo site. With the way the routing and virtual DOM works, navigating backwards to the homepage renews the elements on the page to new references.
+
+This causes the IntersectionObserver to not work. Old element referenced by the observer are not `null`, but they certainly don't look like they exist.
+
+Resetting the observer reintroduces the scrolling. This is done by:
+
+1. disconnecting with observer from all listeners;
+2. querying `media-item` elements again;
+3. reconnecting observer to new elements.
+
+Currently, the check is done via a timer than logs of the current URL and keeps track of whether it changed.
+
+Ideally, we would listen to some sort of navigation event fired by Preact/Cargo that we could listen to in order to reset only when needed. A ticket has been sent to Cargo support.
