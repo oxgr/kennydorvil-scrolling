@@ -41,7 +41,7 @@ function ioCallback(entries) {
   entries.forEach(entryHandler);
   return;
 
-  function entryHandler() {
+  function entryHandler(entry) {
     const vignette = entry.target;
 
     // Guard for media-items outside of home page
