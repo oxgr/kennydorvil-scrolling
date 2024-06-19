@@ -28,6 +28,10 @@ export const Params = {
   // Can be negative.
   OPACITY_MIN: 0,
 
+  // Enables a global visual vignette effect.
+  // NOTE: Disabled for legibility of captions.
+  VIGNETTE_EFFECT_ENABLE: false,
+
   // Enable fadein of vignette caption titles
   CAPTION_FADEIN_ENABLE: false,
 

@@ -13,14 +13,14 @@ main();
 function main() {
   console.log("Scrolling effects by @oxgr");
 
-  // Retrieve exisiting elements
-  const vignetteElements = getMediaItems(document);
-
   // Visual vignette element needs to layer on global viewport
   // and this is easier to do with `document.body`
-  // NOTE: This feature was disabled for legibility of captions.
-  //
-  // addVignetteEffectElement(document.body);
+  if (Params.VIGNETTE_EFFECT_ENABLE) {
+    addVignetteEffectElement(document.body);
+  }
+
+  // Retrieve exisiting elements
+  const vignetteElements = getMediaItems(document);
 
   // Create an observer that watches the movements of elements within its bounds
   const scrollObserver = createIntersectionObserver(document);
