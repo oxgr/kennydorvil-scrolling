@@ -7,7 +7,8 @@ export function getVignetteImg(vignette) {
 export function applyVignetteCss(vignette, { filter, transform }) {
   // Retrieve the image element inside the `media-item` custom element from Cargo.
   const targetElement = getVignetteImg(vignette);
-  if (!targetElement) throw Error("Vignette does not have a .media element!");
+  if (!targetElement)
+    return Error("Vignette does not have a .media element!\n", vignette);
   // console.log(targetElement);
 
   // Apply the CSS strings to the style
@@ -74,13 +75,24 @@ export function generatePageChangeFn(rootPath) {
   };
 }
 
+export async function getStore() {
+  return new Promise((resolve, reject) => {
+    let checkCounter = 0;
+    setTimeout(() => {
+      checkCounter++;
+      if (!!window.store) resolve(window.store);
+      if (checkCounter == 50) throw Error("Took too long to get store");
+    }, 100);
+  });
+}
+
 /**
  * Attach an event to the Preact/Cargo store that fires every time a page is rendered.
  * Retrieved from the Cargo dev team via Cargo support.
  *
  * @param {(HTMLElement) => void} callbackFn - Function to call every time a page is rendered
  */
-export function onPageRender(callbackFn) {
+export function onPageRender(store, callbackFn) {
   let lastRenderedPages = [];
 
   const onNewPageRender = (pageEl) => {
