@@ -19,7 +19,7 @@ export function applyVignetteCss(vignette, { filter, transform }) {
  * Manually set CSS of an element to the default hidden state (rotated + blurred).
  */
 export function setVignetteCssDefault(vignette) {
-  const filter = `blur(${Params.BLUR_STRENGTH_MAX}px) brightness(${Params.OPACITY_MIN * 100}%)`;
+  const filter = `blur(${Params.BLUR_STRENGTH_MAX}px) brightness(${Params.BRIGHTNESS_MIN * 100}%)`;
   const transform = `perspective(${Params.MECH_PERSPECTIVE_AMT}vw) rotateX(${Params.MECH_ROTATE_MAX}turn) scale(${Params.MECH_SCALE_AMT}`;
 
   return applyVignetteCss(vignette, { filter, transform });
@@ -38,6 +38,8 @@ export function getMediaItems(container) {
   const mediaItems = Object.values(mediaItemsCollection).sort();
   return mediaItems;
 }
+
+export function getScriptContainer(container) {}
 
 /*
  * Attach each vignette to the observer
@@ -70,4 +72,46 @@ export function generatePageChangeFn(rootPath) {
     urlChanged = false;
     return true;
   };
+}
+
+/**
+ * Attach an event to the Preact/Cargo store that fires every time a page is rendered.
+ * Retrieved from the Cargo dev team via Cargo support.
+ *
+ * @param {(HTMLElement) => void} callbackFn - Function to call every time a page is rendered
+ */
+export function onPageRender(callbackFn) {
+  let lastRenderedPages = [];
+
+  const onNewPageRender = (pageEl) => {
+    console.log("new page element rendered", pageEl);
+  };
+
+  store.subscribe(() => {
+    const currentRenderedPages = store.getState().frontendState.renderedPages;
+
+    // rendered page list changed
+    if (currentRenderedPages !== lastRenderedPages) {
+      // grab all pages
+      currentRenderedPages
+        // filter only by pages not previously rendered
+        .filter((pageEl) => !lastRenderedPages.includes(pageEl))
+        // run the callback for those new pages
+        .forEach(callbackFn);
+
+      // update the last known rendered page list
+      lastRenderedPages = currentRenderedPages;
+    }
+  });
+}
+
+export function resetObserverReferences(observer, container) {
+  // Remove old references
+  observer.disconnect();
+
+  // Query new references
+  const newVignetteElements = getMediaItems(container);
+
+  // Set observer again
+  observeElementsInArray(observer, newVignetteElements);
 }

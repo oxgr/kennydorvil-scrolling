@@ -1,4 +1,11 @@
 export const Params = {
+  // Used to identify the script element and the container it's in.
+  // WARNING: This script relies on manually setting this id to the script element added in Cargo's HTML editor.
+  // ```
+  //  <script id="scrollingEffects" src="..."></script>
+  // ```
+  SCRIPT_ID: "scrollingEffects",
+
   // Margins of intersection observer as ratios of the viewport.
   // Determines the point where vignettes start to react.
   ROOT_MARGIN_TOP_DESKTOP: 5,
@@ -24,9 +31,10 @@ export const Params = {
   MECH_PERSPECTIVE_AMT: 40,
   MECH_SCALE_AMT: 0.5,
 
-  // Minimum opacity of images at the edge of intersection.
+  // Min/max brightness of images throughout intersection
   // Can be negative.
-  OPACITY_MIN: 0,
+  BRIGHTNESS_MIN: 2,
+  BRIGHTNESS_MAX: 1,
 
   // Enables a global visual vignette effect.
   // NOTE: Disabled for legibility of captions.
