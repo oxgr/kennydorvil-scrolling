@@ -6,12 +6,26 @@ import {
   getMediaItems,
   observeElementsInArray,
   generatePageChangeFn,
+  onPageRender,
+  resetObserverReferences,
 } from "./utils.js";
 
 main();
 
 function main() {
   console.log("Scrolling effects by @oxgr");
+
+  const scriptElement = document.querySelector(`#${Params.SCRIPT_ID}`);
+  if (!scriptElement)
+    console.warn(
+      `Script element could not be found!
+Does the ID set on the element in Cargo match Params.SCRIPT_ID?
+
+SCRIPT_ID: '${Params.SCRIPT_ID}'
+
+ID is required to track page element changes and reset IntersectionObserver reliably.
+Proceeding with timer reset...`,
+    );
 
   // Visual vignette element needs to layer on global viewport
   // and this is easier to do with `document.body`
@@ -27,18 +41,34 @@ function main() {
 
   observeElementsInArray(scrollObserver, vignetteElements);
 
-  vignetteElements.forEach((vignette) => {
+  // Misc actions for prep
+  vignetteElements.forEach((vignette, index) => {
     // Set a custom class name to prep caption fade in if enabled.
     if (Params.CAPTION_FADEIN_ENABLE) {
       vignette.querySelector(".caption")?.classList.add("fadeIn");
     }
 
     // Manually unset CSS variables on init for all except first vignette
-    if (!vignette.href?.includes("01")) {
-      setVignetteCssDefault(vignette);
-    }
+    if (index == 0) return;
+
+    setVignetteCssDefault(vignette);
   });
 
+  // Watch for Cargo/Preact rendered pages only if script element is found
+  if (scriptElement) {
+    onPageRender((pageEl) => {
+      const pageContainsScript = pageEl.querySelector(`#${Params.SCRIPT_ID}`);
+
+      // Ignore if script is not found inside the element
+      if (!pageContainsScript) return;
+
+      resetObserverReferences(scrollObserver, document);
+    });
+    return;
+  }
+
+  // Else, reset observer with timed checks as backup ( WARNING: Breaks on iPhone/iPad )
+  //
   // Generate detector function that compares against the home page
   const pageChanged = generatePageChangeFn("/");
 
@@ -46,14 +76,6 @@ function main() {
   // See: README.md#preact-virtual-dom-resets-observer-references
   setInterval(() => {
     if (!pageChanged(window.location.pathname)) return;
-
-    // Remove old references
-    scrollObserver.disconnect();
-
-    // Query new references
-    const newVignetteElements = getMediaItems(document);
-
-    // Set observer again
-    observeElementsInArray(scrollObserver, newVignetteElements);
+    resetObserverReferences(scrollObserver, document);
   }, Params.OBSERVER_RESET_WATCHER_INTERVAL);
 }

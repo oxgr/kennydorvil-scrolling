@@ -56,7 +56,10 @@ function ioCallback(entries) {
     // Get the relevant CSS strings to apply
     const filterBlurString = filterBlur(intRatio);
     const transformMechString = transformMech(intRatio, isHigh);
-    // const opacityString = opacity(initRatio);
+    const opacityString = intRatio.toString();
+
+    // const opacityString = intRatio == 0 ? "0" : "1";
+    //   entry.target.style.opacity = opacityString;
 
     // Apply the CSS strings to the style
     try {
@@ -64,6 +67,7 @@ function ioCallback(entries) {
         filter: filterBlurString,
         transform: transformMechString,
       });
+      entry.target.style.opacity = opacityString;
     } catch (err) {
       console.error(err);
     }
@@ -84,15 +88,18 @@ function ioCallback(entries) {
   }
 }
 
-function opacity(ratio) {
-  const opacityAmt = ratio * (1 - Params.OPACITY_MIN) + Params.OPACITY_MIN;
-  return `${opacityAmt}`;
-}
-
 function filterBlur(ratio) {
   const blurAmt =
     Params.BLUR_STRENGTH_MAX - Math.round(ratio * Params.BLUR_STRENGTH_MAX);
-  return `blur(${blurAmt}px) brightness(${opacity(ratio) * 100}%)`;
+  const brightnessAmt =
+    ratio * (Params.BRIGHTNESS_MAX - Params.BRIGHTNESS_MIN) +
+    Params.BRIGHTNESS_MIN;
+  return `blur(${blurAmt}px) brightness(${brightnessAmt * 100}%)`;
+
+  // const blurAmt =
+  //   Params.BLUR_STRENGTH_MAX - Math.round(ratio * Params.BLUR_STRENGTH_MAX);
+  //
+  // return `blur(${blurAmt}px)`;
 }
 
 function transformMech(ratio, isHigh) {

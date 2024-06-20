@@ -96,6 +96,9 @@ Resetting the observer reintroduces the scrolling. This is done by:
 2. querying `media-item` elements again;
 3. reconnecting observer to new elements.
 
-Currently, the check is done via a timer than logs of the current URL and keeps track of whether it changed.
+~Currently, the check is done via a timer than logs of the current URL and keeps track of whether it changed.~
+~Ideally, we would listen to some sort of navigation event fired by Preact/Cargo that we could listen to in order to reset only when needed. A ticket has been sent to Cargo support.~
 
-Ideally, we would listen to some sort of navigation event fired by Preact/Cargo that we could listen to in order to reset only when needed. A ticket has been sent to Cargo support.
+It was found that while the previous solution worked on most devices, it completely broke on iOS devices.
+
+The Cargo dev team provided a way to attach an event to the Preact store that fires when a page is rendered (`onPageRender()`).
