@@ -7,7 +7,8 @@ export function getVignetteImg(vignette) {
 export function applyVignetteCss(vignette, { filter, transform }) {
   // Retrieve the image element inside the `media-item` custom element from Cargo.
   const targetElement = getVignetteImg(vignette);
-  if (!targetElement) throw Error("Vignette does not have a .media element!");
+  if (!targetElement)
+    return Error("Vignette does not have a .media element!\n", vignette);
   // console.log(targetElement);
 
   // Apply the CSS strings to the style

@@ -62,15 +62,13 @@ function ioCallback(entries) {
     //   entry.target.style.opacity = opacityString;
 
     // Apply the CSS strings to the style
-    try {
-      applyVignetteCss(vignette, {
-        filter: filterBlurString,
-        transform: transformMechString,
-      });
-      entry.target.style.opacity = opacityString;
-    } catch (err) {
-      console.error(err);
-    }
+    const err = applyVignetteCss(vignette, {
+      filter: filterBlurString,
+      transform: transformMechString,
+    });
+    if (err) console.warn(err);
+
+    entry.target.style.opacity = opacityString;
 
     // Fade in captions
     if (Params.CAPTION_FADEIN_ENABLE) {
