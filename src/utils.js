@@ -73,6 +73,17 @@ export function generatePageChangeFn(rootPath) {
   };
 }
 
+export async function getStore() {
+  return new Promise((resolve, reject) => {
+    let checkCounter = 0;
+    setTimeout(() => {
+      checkCounter++;
+      if (!!window.store) resolve(window.store);
+      if (checkCounter == 50) throw Error("Took too long to get store");
+    }, 100);
+  });
+}
+
 /**
  * Attach an event to the Preact/Cargo store that fires every time a page is rendered.
  * Retrieved from the Cargo dev team via Cargo support.

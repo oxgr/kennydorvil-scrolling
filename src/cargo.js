@@ -8,11 +8,12 @@ import {
   generatePageChangeFn,
   onPageRender,
   resetObserverReferences,
+  getStore,
 } from "./utils.js";
 
 main();
 
-function main() {
+async function main() {
   console.log("Scrolling effects by @oxgr");
 
   const scriptElement = document.querySelector(`#${Params.SCRIPT_ID}`);
@@ -54,9 +55,15 @@ Proceeding with timer reset...`,
     setVignetteCssDefault(vignette);
   });
 
+  try {
+    store = await getStore();
+  } catch (err) {
+    console.error(err);
+  }
+
   // Watch for Cargo/Preact rendered pages only if script element is found
-  if (scriptElement) {
-    onPageRender(window.store, (pageEl) => {
+  if (scriptElement && store) {
+    onPageRender(store, (pageEl) => {
       const pageContainsScript = pageEl.querySelector(`#${Params.SCRIPT_ID}`);
 
       // Ignore if script is not found inside the element
