@@ -40,8 +40,6 @@ export function getMediaItems(container) {
   return mediaItems;
 }
 
-export function getScriptContainer(container) {}
-
 /*
  * Attach each vignette to the observer
  **/
@@ -81,7 +79,7 @@ export function generatePageChangeFn(rootPath) {
  *
  * @param {(HTMLElement) => void} callbackFn - Function to call every time a page is rendered
  */
-export function onPageRender(callbackFn) {
+export function onPageRender(store, callbackFn) {
   let lastRenderedPages = [];
 
   const onNewPageRender = (pageEl) => {

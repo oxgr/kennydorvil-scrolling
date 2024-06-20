@@ -56,7 +56,7 @@ Proceeding with timer reset...`,
 
   // Watch for Cargo/Preact rendered pages only if script element is found
   if (scriptElement) {
-    onPageRender((pageEl) => {
+    onPageRender(window.store, (pageEl) => {
       const pageContainsScript = pageEl.querySelector(`#${Params.SCRIPT_ID}`);
 
       // Ignore if script is not found inside the element
